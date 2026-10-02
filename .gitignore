@@ -1,0 +1,58 @@
+# ===== 系统文件 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.swp
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+venv/
+.venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== 环境变量 / 密钥 =====
+.env
+.env.*
+*.key
+credentials.json
+
+# ===== 数据与结果大文件（说明性小文件保留）=====
+data/raw/
+data/processed/
+data/external/
+results/checkpoints/*
+!results/checkpoints/.gitkeep
+results/logs/*
+!results/logs/.gitkeep
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+*.parquet
+*.pkl
+
+# ===== 论文中间产物 =====
+thesis/drafts/*.aux
+thesis/drafts/*.log
+thesis/drafts/*.out
+thesis/drafts/*.synctex.gz
+thesis/drafts/*.bbl
+thesis/drafts/*.blg
+thesis/drafts/*.fls
+thesis/drafts/*.fdb_latexmk
