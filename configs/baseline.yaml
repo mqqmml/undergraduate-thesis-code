@@ -1,0 +1,67 @@
+# ============================================================
+# 朴素 RAG Baseline 配置（固定切分 + 单一向量检索 + 固定 Top-k）
+# 改这个文件即可切换实验配置，代码里不写死任何超参
+# ============================================================
+
+name: baseline
+description: 朴素 RAG（固定切分、单一稠密向量检索、固定 Top-k、无重排与查询改写）
+
+# ---------- 语料 ----------
+corpus:
+  raw_dir: data/raw                # 语料目录，支持 .md / .txt / .pdf
+  patterns: ["*.md", "*.txt", "*.pdf"]
+
+# ---------- 文档切分（固定）----------
+chunk:
+  size: 512                        # 每个 chunk 最大字符数
+  overlap: 50                      # 相邻 chunk 重叠字符数
+  splitter: recursive              # recursive = 按 \n\n -> \n -> 空格 逐级切
+
+# ---------- 向量化 ----------
+embedding:
+  provider: ollama
+  model: nomic-embed-text          # 必须与索引一致，换模型需重建索引
+
+# ---------- 索引 ----------
+index:
+  type: faiss
+  persist_dir: index/baseline
+
+# ---------- 检索（单一方案，固定 Top-k）----------
+retrieve:
+  mode: dense                      # dense = 单一稠密向量相似度检索
+  top_k: 5
+
+# ---------- 生成 ----------
+generate:
+  provider: ollama
+  model: qwen3:4b                  # ollama pull qwen3:4b
+  temperature: 0
+  max_context_chunks: 5            # 拼进 prompt 的 chunk 数（与 top_k 保持一致）
+  prompt: |
+    你是计算机网络课程助教。请严格依据下面提供的资料回答问题。
+
+    要求：
+    1. 只使用资料中的信息作答，资料里没有的内容不要编造；
+    2. 回答尽量完整、条理清晰，涉及协议流程时按步骤说明；
+    3. 在句末用 [片段1]、[片段2] 的形式标注该结论来自哪个片段；
+    4. 如果资料不足以回答，直接说明"资料中没有相关信息"。
+
+    【资料】
+    {context}
+
+    【问题】
+    {question}
+
+    【回答】
+
+# ---------- 评测 ----------
+eval:
+  questions: data/eval/questions.jsonl
+  k_values: [1, 3, 5, 10]          # 用于计算 HitRate@k / Recall@k（会与 top_k 取并集）
+  match: evidence                  # evidence = 用 gold_evidence 原文片段判定命中
+  min_evidence_len: 8              # 去空白后短于此长度的证据片段忽略
+
+# ---------- 结果输出 ----------
+output:
+  dir: results

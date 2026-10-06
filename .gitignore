@@ -30,6 +30,7 @@ env/
 credentials.json
 
 # ===== 数据与结果大文件（说明性小文件保留）=====
+index/
 data/raw/
 data/processed/
 data/external/

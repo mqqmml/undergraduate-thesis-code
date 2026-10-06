@@ -1,0 +1,20 @@
+# ===== 环境配置 =====
+python-dotenv==1.2.3
+
+# ===== LangChain 生态 =====
+langchain==1.4.2
+langchain-core==1.6.3
+langchain-community==0.4.2
+langchain-text-splitters==1.1.2
+langchain-ollama==1.1.0
+
+# ===== 向量库 / 文档解析 =====
+faiss-cpu==1.15.1
+unstructured[md]==0.27.6      # Markdown 加载
+pypdf==6.1.1                  # PDF 加载（教材语料）
+
+# ===== 通用 =====
+numpy==2.5.3
+pandas==2.3.3
+PyYAML==6.0.2
+tqdm==4.67.1
