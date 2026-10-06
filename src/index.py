@@ -9,8 +9,11 @@ from __future__ import annotations
 
 import json
 import shutil
+import time
 from pathlib import Path
 from typing import Any, Dict, List
+
+from tqdm import tqdm
 
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
@@ -27,13 +30,38 @@ def get_embedding(cfg: Dict[str, Any]) -> OllamaEmbeddings:
 
 
 def build_index(chunks: List[Document], cfg: Dict[str, Any]) -> Path:
-    """构建并保存 FAISS 索引，返回索引目录。"""
+    """构建并保存 FAISS 索引，返回索引目录。
+
+    注意：Ollama 的 /api/embed 一次塞全部文本会压垮 llama-server，
+    这里按批（EMBED_BATCH）手动分批嵌入，再拼成 FAISS 索引。
+    """
     persist_dir = resolve(cfg["index"]["persist_dir"])
     if persist_dir.exists():
         shutil.rmtree(persist_dir)
         print(f"[index] 已清除旧索引 {persist_dir}")
 
-    vectorstore = FAISS.from_documents(chunks, get_embedding(cfg))
+    embedding = get_embedding(cfg)
+    texts = [c.page_content for c in chunks]
+
+    vectors: List[List[float]] = []
+    batch_size = cfg["index"].get("embed_batch", 32)
+    for i in tqdm(range(0, len(texts), batch_size), desc="[index] embedding"):
+        batch = texts[i : i + batch_size]
+        for attempt in range(3):  # 单批失败重试，网络/服务抖动时兜底
+            try:
+                vectors.extend(embedding.embed_documents(batch))
+                break
+            except Exception as e:  # noqa: BLE001
+                if attempt == 2:
+                    raise
+                print(f"[index] 第 {i//batch_size + 1} 批嵌入失败，重试 {attempt + 1}/2：{e}")
+                time.sleep(3)
+
+    vectorstore = FAISS.from_embeddings(
+        list(zip(texts, vectors)),
+        embedding,
+        metadatas=[c.metadata for c in chunks],
+    )
     persist_dir.mkdir(parents=True, exist_ok=True)
     vectorstore.save_local(str(persist_dir))
     print(f"[index] FAISS 索引已保存：{persist_dir}（{len(chunks)} 个向量）")

@@ -26,6 +26,7 @@ embedding:
 index:
   type: faiss
   persist_dir: index/baseline
+  embed_batch: 32          # 每批送入 Ollama 的 chunk 数，防止单次请求过大压垮 llama-server
 
 # ---------- 检索（单一方案，固定 Top-k）----------
 retrieve:

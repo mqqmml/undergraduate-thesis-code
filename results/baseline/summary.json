@@ -1,0 +1,36 @@
+{
+  "n_questions": 30,
+  "HitRate@1": 0.1333,
+  "Recall@1": 0.0944,
+  "HitRate@3": 0.3667,
+  "Recall@3": 0.2333,
+  "HitRate@5": 0.4667,
+  "Recall@5": 0.3056,
+  "HitRate@10": 0.5667,
+  "Recall@10": 0.3944,
+  "MRR": 0.2761,
+  "KeyPointCoverage": 0.4361,
+  "CitationRate": 0.6,
+  "failure_distribution": {
+    "generation_miss": 0.1667,
+    "ok": 0.3,
+    "rank_miss": 0.1,
+    "retrieval_miss": 0.4333
+  },
+  "failure_counts": {
+    "retrieval_miss": 13,
+    "ok": 9,
+    "rank_miss": 3,
+    "generation_miss": 5
+  },
+  "experiment": "baseline",
+  "config": "F:\\undergraduate\\configs\\baseline.yaml",
+  "chunk_size": 512,
+  "chunk_overlap": 50,
+  "retrieve_mode": "dense",
+  "top_k": 5,
+  "embedding_model": "nomic-embed-text",
+  "llm_model": "qwen3:4b",
+  "with_generation": true,
+  "elapsed_sec": 1533.1
+}
