@@ -5,6 +5,12 @@
 > 依据配置：`configs/baseline.yaml` ｜ 配套：[实验设计](experiment_design.md)
 > 状态：第一版。结论基于 30 题样本，样本扩充至 v2.0 后需复算。
 
+> **⚠️ 后续更新（2026-10-07）**：本报告的 30 题结论已在 **238 题 eval-v2.0** 上复算，口径修正（top-50 检索深度、chunk-level gold、KPC 分词重叠、Faithfulness）已全部落地。
+> 复算后的正式基线为：HitRate@5=0.265 / @50=0.656 / MRR=0.164 / KPC=0.494 / CitationRate=0.500 / Faithfulness=0.339；
+> 失败类型 `rank_miss` 39.1% > `retrieval_miss` 34.5% > `ok` 21.4% > `generation_miss` 5.0%。
+> 本报告第一节"排序问题题数是召回问题 2.25 倍"的核心判断在大样本上得到验证（93 vs 82）。
+> 最新数据见 `results/baseline_v2/`、`data/metadata/eval_stats.md`、`evaluation/README.md` 第六节。
+
 ---
 
 ## 一、结论摘要

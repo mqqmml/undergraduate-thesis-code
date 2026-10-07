@@ -36,19 +36,22 @@
 
 ## 五、当前进展
 
-- 当前阶段：**eval-v2.0（238 题）已冻结**，Baseline v2.0 重跑中（检索指标已完成，生成评测后台进行）。
+- 当前阶段：**eval-v2.0（238 题）已冻结，Baseline v2.0 完整评测已完成**，下一步进入检索方案与参数消融实验。
 - 最近完成：
   - 构建王道 408《计算机网络》6 章 OCR 语料知识库（373,650 字符，1078 个 chunk）；
   - 完成 30 题 v1.0 评测集标注与朴素 RAG Baseline 全链路评测；
   - 评测口径修正：检索深度扩到 top-50、gold 升级为 chunk-level、KPC 改分词重叠、引入 Faithfulness（qwen3:4b 裁判）；
   - eval-v2.0 扩充并冻结：从 6 份带标准答案的题库/试卷解析 382 道候选题，全自动质检（去重 66、时代/缺图过滤 27、gold 映射与答案支撑校验）后入选 208 题，合计 238 题；
+  - **Baseline v2.0 完整重跑完成**（238 题，检索 + 生成 + Faithfulness，耗时 6h48m）；
   - 输出《Baseline 问题分析报告》《实验设计文档》与 5 篇核心阅读卡。
 - 当前问题：
-  - nomic-embed-text 中文区分度不足（I01），HitRate@5=0.265 / MRR=0.164，待 E2 换 embedding；
-  - 对比型题目检索命中但答案覆盖低（I06），待 query rewrite 实验。
+  - **排序偏后是首要瓶颈（I09）**：失败类型中 `rank_miss` 占 39.1%（93 题）、`retrieval_miss` 占 34.5%（82 题），即证据已在 top-50 内但多数排在第 6 名之后——HitRate@5=0.265 而 @50=0.656，说明检索「找得到但排不上去」；
+  - nomic-embed-text 中文区分度不足（I01），待 E2 换 embedding；
+  - 对比型题目检索命中但答案覆盖低（I06），待 query rewrite 实验；
+  - Faithfulness 仅 0.339，生成环节幻觉明显偏多，需在 E3/E4 一并处理。
 - 下一步：
-  1. Baseline v2.0 完整重跑（生成 + Faithfulness）；
-  2. 进入 E1/E2 检索方案与消融实验。
+  1. 进入 E1 检索方案对比（Dense / BM25 / Hybrid）与 E2 参数消融（chunk size / top-k / embedding）；
+  2. 引入 rerank 缓解 `rank_miss`，用 query rewrite 缓解对比型与多跳型问题。
 
 ## 六、主要实验结果
 
@@ -56,11 +59,20 @@
 |---|---|---|
 | baseline v1.0（30 题，旧口径） | HitRate@5=0.467 / MRR=0.276 / KPC=0.436 / CitationRate=0.60 | 已完成 |
 | baseline v2.0 检索（238 题，新口径，--no-gen） | HitRate@5=0.265 / HitRate@50=0.656 / MRR=0.164 | 已完成 |
-| baseline v2.0 完整（含生成 + Faithfulness） | 后台运行中 | 进行中 |
-| exp01（检索方案对比） | - | 未开始 |
+| **baseline v2.0 完整（238 题，含生成 + Faithfulness）** | **HitRate@5=0.265 / @10=0.357 / @20=0.479 / @50=0.656；Recall@50=0.476；MRR=0.164；KPC=0.494；CitationRate=0.50；Faithfulness=0.339** | **已完成** |
+| exp01（检索方案对比：Dense / BM25 / Hybrid） | - | 未开始 |
 | exp02（参数消融：chunk / top-k / embedding） | - | 未开始 |
 
-> v1.0 详细结果见 `results/baseline/summary.json`；v2.0 见 `results/baseline_v2/summary.json` 与 `data/eval/audit_report_v2.0.md`。
+**失败类型分布**（n=238，判定顺序：无 gold 命中→`retrieval_miss`；命中但不在 top-5→`rank_miss`；答案覆盖不足→`generation_miss`）：
+
+| 失败类型 | 占比 | 题数 | 含义 |
+|---|---|---|---|
+| `rank_miss` | 39.1% | 93 | 证据在 top-50 内但排在 top-5 之后（可被 rerank 修复） |
+| `retrieval_miss` | 34.5% | 82 | top-50 内完全没有 gold chunk（需换 embedding / 混合检索） |
+| `ok` | 21.4% | 51 | 检索命中且答案覆盖达标 |
+| `generation_miss` | 5.0% | 12 | 检索到但生成答案未覆盖关键点 |
+
+> v1.0 详细结果见 `results/baseline/summary.json`；v2.0 见 `results/baseline_v2/summary.json`、`results/baseline_v2/per_question.csv`（逐题明细）与 `data/eval/audit_report_v2.0.md`。
 
 ## 七、仓库目录说明
 
@@ -109,7 +121,7 @@ python -m src.index
 # 2. 只评检索指标（秒级）
 python -m src.evaluate --no-gen
 
-# 3. 完整评测（检索 + 生成 + Faithfulness，约 25–40 分钟）
+# 3. 完整评测（检索 + 生成 + Faithfulness；238 题约 6.8 小时，30 题约 25–40 分钟）
 python -m src.evaluate
 ```
 

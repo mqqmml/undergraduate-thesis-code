@@ -33,10 +33,18 @@
   - 解析 382 道候选题，全自动质检（A1 去重 66 / A2 gold 映射 / A3 答案支撑 81 / A4 时代缺图过滤 27），
     eval-v2.0 冻结为 **238 题**（30 人工 + 208 新题），弃人工抽检表流程；
   - 检索口径基线（--no-gen）：HitRate@5=0.265、HitRate@50=0.656、MRR=0.164；
-  - 更新 README、milestones、issues、eval_stats、requirements。
+  - **Baseline v2.0 完整重跑完成**（238 题，检索 + 生成 + Faithfulness，耗时 6h48m）：
+    HitRate@5=0.265 / @10=0.357 / @20=0.479 / @50=0.656、Recall@50=0.476、MRR=0.164、
+    KPC=0.494、CitationRate=0.50、Faithfulness=0.339；
+    失败类型：`rank_miss` 39.1%（93）/ `retrieval_miss` 34.5%（82）/ `ok` 21.4%（51）/ `generation_miss` 5.0%（12）；
+  - 更新 README、milestones、issues、eval_stats、requirements；
+  - 代码与评测集推送至 GitHub `origin/main`（`0acbcc5`、`107af84`）。
 - 遇到的问题：
   - nomic-embed-text 中文区分度不足在 238 题上更明显（HitRate@5 从 0.467 降至 0.265），E2 换 embedding 优先级提高；
+  - **首要瓶颈是排序而非召回**：`rank_miss`（39.1%）超过 `retrieval_miss`（34.5%），HitRate@5 与 @50 相差 0.39，说明引入 rerank 的收益空间最大；
+  - Faithfulness 仅 0.339，生成环节幻觉偏多，需在 E3/E4 一并治理；
   - 对比型/多跳型题目占比偏低（自动质检过滤较严），后续可定向补充。
 - 下周计划：
-  - Baseline v2.0 完整重跑收尾（生成 + Faithfulness，后台进行中）；
-  - 进入 E1/E2 检索方案与消融实验。
+  - 启动 E1 检索方案对比（Dense / BM25 / Hybrid）；
+  - 启动 E2 参数消融（chunk size / top-k / embedding）；
+  - 引入 rerank 针对 `rank_miss` 做专项验证。

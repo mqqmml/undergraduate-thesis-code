@@ -66,3 +66,28 @@
 | MRR | 0.276 | 0.164 |
 
 > 题量扩大约 8 倍、题目更真实多样，指标下降属预期；v2.0 数字才是论文正式基线。
+
+## Baseline v2.0 完整评测结果（238 题，2026-10-07）
+
+配置：chunk_size=512 / overlap=50 / dense(nomic-embed-text) / top_k=5 / qwen3:4b；耗时 24481.7s（6h48m）。
+
+| 指标 | @1 | @3 | @5 | @10 | @20 | @50 |
+|---|---|---|---|---|---|---|
+| HitRate | 0.067 | 0.193 | 0.265 | 0.357 | 0.479 | 0.656 |
+| Recall  | 0.038 | 0.108 | 0.153 | 0.218 | 0.324 | 0.476 |
+
+| 生成与整体指标 | 值 |
+|---|---|
+| MRR | 0.164 |
+| KeyPointCoverage | 0.494 |
+| CitationRate | 0.500 |
+| Faithfulness | 0.339 |
+
+| 失败类型 | 占比 | 题数 |
+|---|---|---|
+| `rank_miss`（top-50 内但不在 top-5） | 39.1% | 93 |
+| `retrieval_miss`（top-50 内无 gold） | 34.5% | 82 |
+| `ok` | 21.4% | 51 |
+| `generation_miss`（检索到但答案覆盖不足） | 5.0% | 12 |
+
+> 结论：**排序是首要瓶颈**（`rank_miss` 39.1% > `retrieval_miss` 34.5%，HitRate@5 与 @50 差 0.39），rerank 是收益最大的优化方向；详见 `results/baseline_v2/`（summary.json + per_question.csv）与 issues I09/I10。

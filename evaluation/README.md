@@ -10,59 +10,79 @@
 
 | 内容 | 路径 | 是否入库 |
 |---|---|---|
-| 评测集（30 题 v1.0） | `data/eval/questions.jsonl` | ✅ |
-| 评测集统计与质检记录 | `data/metadata/eval_stats.md` | ✅ |
+| 评测集（238 题 v2.0，当前使用） | `data/eval/questions_v2.0.jsonl` | ✅ |
+| 评测集（30 题 v1.0，历史版本） | `data/eval/questions.jsonl` | ✅ |
+| 评测集（30 题带 chunk gold） | `data/eval/questions_v1.1.jsonl` | ✅ |
+| 冻结清单与 sha256 | `data/eval/eval_v2.0_manifest.json` | ✅ |
+| 自动质检报告 | `data/eval/audit_report_v2.0.md` | ✅ |
+| 评测集统计 | `data/metadata/eval_stats.md` | ✅ |
 | 指标实现（纯 Python，无 LLM 依赖） | `src/metrics.py` | ✅ |
+| Faithfulness 裁判（LLM-as-judge） | `src/judge.py` | ✅ |
 | 评测主脚本 | `src/evaluate.py` | ✅ |
 | 生成模块（被评测调用） | `src/generate.py` | ✅ |
+| 构建与 gold 映射脚本 | `scripts/build_eval_v2.py`、`scripts/map_gold_chunks.py` | ✅ |
 | 结果：汇总指标 | `results/<实验名>/summary.json` | ✅ |
 | 结果：逐题明细 | `results/<实验名>/per_question.csv` | ✅ |
 | 结果：检索日志 | `results/<实验名>/retrieval_log.jsonl` | ✅ |
 
-## 三、评测集规格（v1.0）
+## 三、评测集规格（v2.0，238 题，已冻结）
 
-- 规模 30 题：事实型 8 / 对比型 8 / 过程型 8 / 多跳型 4 / 计算型 2，覆盖全部 6 章
-- 字段：`id`、`type`、`difficulty`、`question`、`gold_answer`、`gold_evidence`（语料逐字片段 1–3 条）、`key_points`
-- 质检：30/30 题 gold_evidence 归一化后可在语料中逐字命中；key_points 均出现在 gold_answer 中
-- 计划：中期前扩充至 150–300 题，冻结为 v2.0，与 v1.0 结果分开报告
+- 规模 238 题 = v1.1 保留 30 题（人工标注）+ 新题源自动质检入选 208 题
+- 题型：事实 147 / 计算 45 / 过程 20 / 对比 17 / 多跳 9
+- 题源：计算机网络技术题库（yscl，扫描件 OCR）、试题库含答案打印版、02141 试题、期末试题及答案、笔试题
+- 字段：`id`、`type`、`question`、`gold_answer`、`gold_chunks`（chunk_id 列表，命中判定依据）、`gold_evidence`（仅 v1.0 30 题保留可读片段）、`key_points`、`options` / `answer_letter`（选择题）、`source`
+- 质检（全自动，取代人工填表）：A1 去重 66 / A2 gold 映射失败 / A3 答案支撑不达标 81 / A4 时代缺图过滤 27
+- v1.0（30 题）作为历史版本保留，结果与 v2.0 分开报告
 
 ## 四、指标定义
 
 | 层 | 指标 | 判定方式 |
 |---|---|---|
-| 检索 | HitRate@k | top-k 内是否含任一 gold_evidence（是记 1） |
-| 检索 | Recall@k | top-k 命中证据数 / 该题全部证据数 |
-| 检索 | MRR | 第一条命中证据排名的倒数 |
-| 生成 | KeyPointCoverage | 答案覆盖 key_points 的比例（归一化后逐字包含判定） |
+| 检索 | HitRate@k | top-k 内是否含任一 gold chunk（k ∈ {1,3,5,10,20,50}） |
+| 检索 | Recall@k | top-k 命中 gold chunk 数 / 该题全部 gold chunk 数 |
+| 检索 | MRR | 第一条命中 gold chunk 排名的倒数 |
+| 生成 | KeyPointCoverage | jieba 分词 + 归一化后的 token 重叠率（阈值 0.5） |
 | 生成 | CitationRate | 答案中是否含 `[片段x]` 标注 |
-| 生成 | Faithfulness | ⬜ 待引入（RAGAS + 本地裁判 + 人工标注校准） |
-| 失败分类 | failure_type | `ok` / `retrieval_miss` / `rank_miss` / `generation_miss` |
+| 生成 | Faithfulness | RAGAS 风格：答案拆 claims，逐条判是否被检索上下文支撑（qwen3:4b 裁判） |
+| 失败分类 | failure_type | `ok` / `retrieval_miss`（top-50 内无 gold）/ `rank_miss`（top-50 内有 gold 但不在 top-5）/ `generation_miss`（检索到但答案覆盖不足） |
 
 ## 五、用法
 
 ```bash
-python -m src.evaluate              # 完整评测：检索 + 生成 + 指标（30 题约 25 min）
 python -m src.evaluate --no-gen     # 只评检索指标（秒级，用于快速筛选配置）
+python -m src.evaluate              # 完整评测：检索 + 生成 + Faithfulness
 python -m src.evaluate --limit 5    # 只评前 5 题（调试用）
-python -m src.evaluate --config configs/e1-rerank.yaml   # 指定实验配置
+python -m src.evaluate --config configs/baseline_v2.yaml   # 指定实验配置
 ```
 
 结果统一写入 `results/<配置中的 name>/`，实验名与配置文件 `name` 字段一致。
 
 ## 六、当前 Baseline 结果锚点
 
-HitRate@5 = 0.467 ｜ MRR = 0.276 ｜ KeyPointCoverage = 0.436 ｜ CitationRate = 0.60
-失败分布：retrieval_miss 43.3% / ok 30% / generation_miss 16.7% / rank_miss 10%
+**Baseline v2.0（238 题，新口径，2026-10-07，耗时 6h48m）**
 
-完整分析见 [`../docs/03-design/baseline_problem_analysis.md`](../docs/03-design/baseline_problem_analysis.md)。
+HitRate：@1 0.067 / @3 0.193 / @5 **0.265** / @10 0.357 / @20 0.479 / @50 **0.656**
+Recall：@5 0.153 / @50 0.476 ｜ MRR **0.164**
+生成：KeyPointCoverage **0.494** ｜ CitationRate 0.500 ｜ Faithfulness **0.339**
 
-## 七、已知口径问题（待修正，修正前不宜做方案对比）
+失败分布：`rank_miss` 39.1%（93）/ `retrieval_miss` 34.5%（82）/ `ok` 21.4%（51）/ `generation_miss` 5.0%（12）
 
-| 问题 | 影响 | 计划 |
+> **核心结论**：失败类型中排序问题（39.1%）已超过召回问题（34.5%），HitRate@5=0.265 而 @50=0.656——即大量 gold 证据「检索到了但排不进前 5」，**rerank 是收益最大的优化方向**（I09）。
+
+历史锚点（v1.0，30 题，旧口径）：HitRate@5 = 0.467 ｜ MRR = 0.276 ｜ KPC = 0.436 ｜ CitationRate = 0.60；
+旧口径失败分布 retrieval_miss 43.3% 系 `max_k=10` 截断所致，v2.0 已修正。
+
+完整分析见 [`../docs/03-design/baseline_problem_analysis.md`](../docs/03-design/baseline_problem_analysis.md) 与 `results/baseline_v2/`。
+
+## 七、口径修正记录（已于 v2.0 完成）
+
+| 原问题 | 影响 | 处理 |
 |---|---|---|
-| 评测时 `max_k = 10`，排名 > 10 一律记为 retrieval_miss | 掩盖"排序偏后"这一类问题（实测 13 题中有 9 题是排名 11–100） | 提高到 20–50，重跑失败分类 |
-| gold_evidence 逐字匹配 | 切分边界错位即判未命中，低估检索能力 | 改为 chunk 级标注或允许 ±1 chunk 邻域命中 |
-| KeyPointCoverage 逐字关键词匹配 | 对改写、缩写零容忍，实测 5 例生成失败中 3 例为误判 | 扩充同义词表 / 改用嵌入相似度 / 引入 LLM 裁判并人工校准 |
+| `max_k = 10`，排名 > 10 一律记为 retrieval_miss | 掩盖「排序偏后」这一类问题 | ✅ 已扩到 top-50，新增 `rank_miss` 类别（现占 39.1%） |
+| gold_evidence 逐字匹配 | 切分边界错位即判未命中，低估检索能力 | ✅ 已改为 chunk-level gold（`gold_chunks`，`match: chunk`） |
+| KeyPointCoverage 逐字关键词匹配 | 对改写、缩写零容忍 | ✅ 已改为 jieba 分词 token 重叠率 |
+| 缺少幻觉度量 | 无法量化生成忠实度 | ✅ 已引入 Faithfulness（LLM-as-judge），全量 238 题已跑 |
+| 抽样人工核验（原计划 30 题填表） | 人工成本高 | ⬜ 待定：自动质检已就位，人工抽查作为可选校准，尚未执行 |
 
 ## 八、实验纪律
 
