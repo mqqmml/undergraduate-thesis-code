@@ -1,0 +1,476 @@
+{
+  "n_questions": 30,
+  "warnings": 0,
+  "details": [
+    {
+      "id": "q001",
+      "matches": [
+        {
+          "evidence": "一般认为，计算机网络是将众多分散的、自治的计算机系统，通过通信设备与线路连接起来，\n并由功能完善的软件实现资源共享和信息传递的系统。",
+          "chunk_id": "01-计算机网络体系结构.md#c0001",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q002",
+      "matches": [
+        {
+          "evidence": "internet（互连网）是一个通用名词，泛指由多个计算机网络互连而成的网络。这些网络之\n间可以使用任意通信协议进行通信，并不要求必须采用TCP/IP。",
+          "chunk_id": "01-计算机网络体系结构.md#c0002",
+          "method": "substring"
+        },
+        {
+          "evidence": "Internet（互联网或因特网）则是一个专用名词，特指当前全球最大的、开放的、由众多网\n络和路由器互连而成的特定计算机网络，它必须采用TCP/IP协议族作为通信规则。",
+          "chunk_id": "01-计算机网络体系结构.md#c0002",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q003",
+      "matches": [
+        {
+          "evidence": "7）生存时间（TTL）。占8位，表数据报在网络中允许经过的路由器数的最大值，防止其\n在网络中无限循环。每经过一个路由器，TTL 减1。若 TTL 被减为0，则丢弃该数据报。",
+          "chunk_id": "04-网络层.md#c0036",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "matches": [
+        {
+          "evidence": "无论哪类IP地址，都由网络号和主机号两部分组成。即IP 地址：={<网络号>,<主机号>}。",
+          "chunk_id": "04-网络层.md#c0041",
+          "method": "substring"
+        },
+        {
+          "evidence": "其中网络号标志主机（或路由器）的接口所连接到的网络，一个网络号在整个互联网范围内必须\n唯一。",
+          "chunk_id": "04-网络层.md#c0042",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q005",
+      "matches": [
+        {
+          "evidence": "简称OSI参考模型。该模型包含7层，自下而上（第1～7层）依次为：物理层、数据链路层\n网络层、传输层、会话层、表示层、应用层。",
+          "chunk_id": "01-计算机网络体系结构.md#c0061",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q006",
+      "matches": [
+        {
+          "evidence": "FTP在工作时使用两个并行的TCP连接（见图6.7）：控制连接（服务器端口21）和数据避",
+          "chunk_id": "06-应用层.md#c0040",
+          "method": "substring"
+        },
+        {
+          "evidence": "接（服务器端口20）。采用两个独立端口有助于协议的清晰实现。",
+          "chunk_id": "06-应用层.md#c0042",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q007",
+      "matches": [
+        {
+          "evidence": "因此，IPv6 标准采用冒号十六进制记法：将地址划分为8组，每组16 位（4个十六进制数），各\n组之间用冒号分隔。",
+          "chunk_id": "04-网络层.md#c0208",
+          "method": "substring"
+        },
+        {
+          "evidence": "省略前导零。每组中前面连续的十六进制零可以省略，但至少要保留一个数字。",
+          "chunk_id": "04-网络层.md#c0208",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q008",
+      "matches": [
+        {
+          "evidence": "网络地址转换（Network Address Translation，NAT）是指将专用网络中的私有 IP地址转换为\n公网IP地址，从而实现与互联网的通信，并对外隐藏内部网络的结构。",
+          "chunk_id": "04-网络层.md#c0060",
+          "method": "substring"
+        },
+        {
+          "evidence": "由于私有IP 地址可在不同专用网络中重复使用，NAT有\n效地缓解了IP地址短缺的问题。此外，NAT还在一定程度上降低了内部网络受攻击的风险。",
+          "chunk_id": "04-网络层.md#c0060",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q009",
+      "matches": [
+        {
+          "evidence": "1）TCP是面向连接的传输层协议，因此引入了建立连接和释放连接的开销。\n2）每一条TCP连接只能有两个端点，且仅支持一对一通信。\n3）TCP提供可靠交付服务，保证所传数据无差错、不丢失、不重复且按序到达。",
+          "chunk_id": "05-传输层.md#c0043",
+          "method": "substring"
+        },
+        {
+          "evidence": "1）UDP是无连接的，没有建立连接的时延。TCP 需要在主机中维护连接状态（包括发送和\n接收缓存、拥塞控制参数、序号和确认序号等），而UDP无须维护这些状态。",
+          "chunk_id": "05-传输层.md#c0019",
+          "method": "substring"
+        },
+        {
+          "evidence": "4）UDP支持一对一、一对多和多对多的通信。TCP仅支持一对～的通信。",
+          "chunk_id": "05-传输层.md#c0020",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q010",
+      "matches": [
+        {
+          "evidence": "电路交换技术的优点：\n1）通信时延小。通信线路为双方专用，数据直达，传输效率高。\n2）有序传输。数据按发送顺序传送，不存在失序问题。",
+          "chunk_id": "01-计算机网络体系结构.md#c0010",
+          "method": "substring"
+        },
+        {
+          "evidence": "1）建立连接时间长。平均建立连接的时间对计算机通信而言过长。\n2）线路利用率低。物理通路被通信双方独占，即使空闲也无法供其他用户使用。",
+          "chunk_id": "01-计算机网络体系结构.md#c0010",
+          "method": "substring"
+        },
+        {
+          "evidence": "由于计算机之间的通信通常是突发式（高频、少量）的，若采用电路交换，已被占用的通信\n线路在大部分时间内处于空闲状态，其利用率往往不足10%，甚至低于1%。",
+          "chunk_id": "01-计算机网络体系结构.md#c0011",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q011",
+      "matches": [
+        {
+          "evidence": "域名解析有两种方式：递归查询和迭代查询。\n（1）主机向本地域名服务器的查询都采用递归查询\n在递归查询中，若本地域名服务器不知道被查询域名的IP地址，则它会以DNS客户的身份，\n代替主机向其他根域名服务器继续发出查询请求，而不是让主机自行进行后续查询。",
+          "chunk_id": "06-应用层.md#c0021",
+          "method": "substring"
+        },
+        {
+          "evidence": "本地域名服务器向根域名服务器的查询通常采用迭代查询。当根域名服务器收到本地域朋",
+          "chunk_id": "06-应用层.md#c0022",
+          "method": "substring"
+        },
+        {
+          "evidence": "务器的迭代查询请求时，要么直接给出所查询的IP地址，要么告诉本地域名服务器：“你下一\n步应向哪个顶级域名服务器查询”。",
+          "chunk_id": "06-应用层.md#c0024",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q012",
+      "matches": [
+        {
+          "evidence": "最常见的距离-向量路由协议是RIP，它采用跳数作为路径费用的度量标准。",
+          "chunk_id": "04-网络层.md#c0224",
+          "method": "substring"
+        },
+        {
+          "evidence": "链路状态（Link State，LS）指的是：本路由器与哪些邻居相连，以及对应链路的代价。链路\n状态算法要求每个节点都掌握完整的全网拓扑结构图。",
+          "chunk_id": "04-网络层.md#c0224",
+          "method": "substring"
+        },
+        {
+          "evidence": "不依赖邻居的路由决策，避免了距离-向量算法中的无穷计数等问题；",
+          "chunk_id": "04-网络层.md#c0225",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q013",
+      "matches": [
+        {
+          "evidence": "奈奎斯特定理指出：在理想低通信道（无噪声、带宽有限）中，为避免码间串扰，极限码元传\n输速率为2W波特，其中 W是信道的频率带宽（单位为Hz）。",
+          "chunk_id": "02-物理层.md#c0007",
+          "method": "substring"
+        },
+        {
+          "evidence": "实际信道存在高斯白噪声。香农定理给出了带宽受限且有高斯噪声干扰的信道的极限数据传\n输速率。",
+          "chunk_id": "02-物理层.md#c0008",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q014",
+      "matches": [
+        {
+          "evidence": "初始拥塞窗口cWnd通常设为1MSS（最新的RFC 允许设置更多MSS），慢开始算法规定：\n每收到一个对新报文段的确认，就将cwnd加1。这样，每经过一个传输轮次（一个往返时延RTT",
+          "chunk_id": "05-传输层.md#c0074",
+          "method": "substring"
+        },
+        {
+          "evidence": "拥塞避免的目标是让cwnd缓慢增长，以降低拥塞风险。其策略是：每经过一个传输轮次（收\n到本轮所有报文段的确认），就将cwnd加1，而不是加倍，从而使cwnd按线性规律缓慢增长（加\n法增大），防止网络过早出现拥塞。",
+          "chunk_id": "05-传输层.md#c0075",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q015",
+      "matches": [
+        {
+          "evidence": "协议是为对等层实体之间进行逻辑通信而定义的规则的集合。",
+          "chunk_id": "01-计算机网络体系结构.md#c0087",
+          "method": "substring"
+        },
+        {
+          "evidence": "服务是指下层为紧邻的上层提供的功能调用，每层只能调用紧邻下层提供的服务（通过服务\n访问点），而不能跨层调用。",
+          "chunk_id": "01-计算机网络体系结构.md#c0088",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q016",
+      "matches": [
+        {
+          "evidence": "TCP/IP的网络层向上只提供简单灵活的、无连接的、尽最大努力交付的数据报服务。考察IP",
+          "chunk_id": "04-网络层.md#c0033",
+          "method": "substring"
+        },
+        {
+          "evidence": "在建立虚电路的阶段，分组才需要携带完整的目的地址，以进行路由器选择。之后，每个分\n组只需携带短的虚电路号即可，属于同一条虚电路的分组按照同一路由进行转发，分组到达终点\n的顺序与发送顺序相同，可以保证有序传输。",
+          "chunk_id": "04-网络层.md#c0033",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q017",
+      "matches": [
+        {
+          "evidence": "第一步：客户向服务器发送连接请求报文段。该报文段的 SYN =1，同时选择一个初始序号\nseq=x。",
+          "chunk_id": "05-传输层.md#c0052",
+          "method": "substring"
+        },
+        {
+          "evidence": "第二步：服务器收到连接请求后，若同意建立连接，则向客户返回确认报文段。该报文段的\nSYN=1、ACK=1，确认序号 ack=x+1，同时选择自己的初始序号 seq=y。",
+          "chunk_id": "05-传输层.md#c0053",
+          "method": "substring"
+        },
+        {
+          "evidence": "第三步：客户收到确认后，再向服务器发送最终确认。该确认报文段的ACK=1，确认序号\nack=y+1，序号 seq=x+1。",
+          "chunk_id": "05-传输层.md#c0054",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q018",
+      "matches": [
+        {
+          "evidence": "本地域名服务器向根域名服务器的查询通常采用迭代查询。当根域名服务器收到本地域朋",
+          "chunk_id": "06-应用层.md#c0022",
+          "method": "substring"
+        },
+        {
+          "evidence": "务器的迭代查询请求时，要么直接给出所查询的IP地址，要么告诉本地域名服务器：“你下一\n步应向哪个顶级域名服务器查询”。随后，由本地域名服务器向该顶级域名服务器发起新的查询\n请求。",
+          "chunk_id": "06-应用层.md#c0024",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q019",
+      "matches": [
+        {
+          "evidence": "UDP 检验和的计算方法是二进制反码求和再取反，二进制反码求和的运算规则：①从低位\n到高位逐列进行加法运算，0和0相加得0，0和1相加得1，1和1相加得0并产生进位1；②若\n最高位相加后产生进位，则将该进位加到结果的最低位，该过程也称回卷。",
+          "chunk_id": "05-传输层.md#c0039",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q020",
+      "matches": [
+        {
+          "evidence": "CRC 的核心思想:将待发送的数据视为三个上进制多项式,通过与一个预定义的生成多项式 G(x)\n进行特定运算，生成一段穴余校验信息（称为帧检验序列，FCS），并将其附加在原始数据之后。",
+          "chunk_id": "03-数据链路层.md#c0029",
+          "method": "substring"
+        },
+        {
+          "evidence": "接收方收到整个顿（可能出错）后，用相同的G(x)对其进行模2除法：若余数为0，则认为传输\n无差错，接受该帧；若余数非0，则认为存在差错，丢弃该帧。",
+          "chunk_id": "03-数据链路层.md#c0030",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q021",
+      "matches": [
+        {
+          "evidence": "IP地址是网络层及以上使用的分层式地址，而硬件地址（MAC地址）是数据链路层使用的\n平面式地址。",
+          "chunk_id": "04-网络层.md#c0071",
+          "method": "substring"
+        },
+        {
+          "evidence": "IP数据报经过多次路由转发抵达目的网络后，在局域网内通过 ARP获取目\n的主机的MAC地址，将IP数据报封装为MAC顿并直接交付给目的主机。",
+          "chunk_id": "04-网络层.md#c0072",
+          "method": "substring"
+        },
+        {
+          "evidence": "每当经过路由器转发时，\n都会被解封装并重新封装，MAC 帧的源地址和目的地址都随之改变，这决定了MAC 地\n址无法用于跨网络通信。",
+          "chunk_id": "04-网络层.md#c0072",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q022",
+      "matches": [
+        {
+          "evidence": "HTTP的无状态特性简化了服务器设计，使其更易于支持大量并发请求。在实际应用中，通\n常结合Cookie与数据库来实现用户行为跟踪",
+          "chunk_id": "06-应用层.md#c0089",
+          "method": "substring"
+        },
+        {
+          "evidence": "Cookie 的工作原理：当用户首次访问某个启用Cookie 的网站时，服务器会为其生成唯一的\nCookie 识别码，如“12345”，并以此为索引在后端数据库中创建一个记录，用于存储该用户的\n访问信息。随后，服务器在HTTP响应报文中添加一个 Set-cookie 首部行：“Set-cookie:12345”。",
+          "chunk_id": "06-应用层.md#c0089",
+          "method": "substring"
+        },
+        {
+          "evidence": "文件中。当用户再次访问该网站时，浏览器会在HTTP请求报文中自动附加一个Cookie 首部行：\n“Cookie：12345”。服务器根据Cookie 识别码即可从数据库中检索出该用户的活动记录，从而",
+          "chunk_id": "06-应用层.md#c0089",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q023",
+      "matches": [
+        {
+          "evidence": "无论处于慢开始阶段还是拥塞避免阶段，只要发送方判断网络出现拥塞（如发生超时），就\n执行以下操作：①将慢开始门限 ssthresh 调整为当前cwnd的一半（但不得小于2）；②将 cwnd\n重置为1；③重新执行慢开始算法。",
+          "chunk_id": "05-传输层.md#c0076",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q024",
+      "matches": [
+        {
+          "evidence": "因此，将以太网的端到端往返传播时延2称为争用期（也称冲突窗口）。",
+          "chunk_id": "03-数据链路层.md#c0142",
+          "method": "substring"
+        },
+        {
+          "evidence": "例如，以太网规定争用期为51.2μs。对于10Mb/s 的以太网，争用期内可发送512bit（64B）。",
+          "chunk_id": "03-数据链路层.md#c0143",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q025",
+      "matches": [
+        {
+          "evidence": "DNS 使用传输层的UDP 而非TCP，因为它不需要使用TCP 在发生传输错误时执行的自动重\n传功能。",
+          "chunk_id": "06-应用层.md#c0038",
+          "method": "substring"
+        },
+        {
+          "evidence": "FTP采用客户/服务器工作模式，基于TCP 提供可靠的传输服务。",
+          "chunk_id": "06-应用层.md#c0039",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q026",
+      "matches": [
+        {
+          "evidence": "UDP用户数据报的数据字段为8192B，加上8B 的首部，总长度是8200B。应当划分为6\n个IP报片。",
+          "chunk_id": "05-传输层.md#c0043",
+          "method": "substring"
+        },
+        {
+          "evidence": "注意，与MSS类似，数据链路层的MTU指的是帧中数据部分的最大长度。",
+          "chunk_id": "05-传输层.md#c0051",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q027",
+      "matches": [
+        {
+          "evidence": "域名解析是指将域名转换为IP地址的过程。当客户端需要进行域名解析时，会通过本机的\nDNS 客户端构造一个DNS 请求报文，并以UDP数据报的形式发送给本地域名服务器。",
+          "chunk_id": "06-应用层.md#c0021",
+          "method": "substring"
+        },
+        {
+          "evidence": "连接建立需经历三个步骤，通常称为三次握手，如图5.6所示。",
+          "chunk_id": "05-传输层.md#c0052",
+          "method": "substring"
+        },
+        {
+          "evidence": "HTTP 使用 TCP 作为传输层协议，从而保证了数据的可靠传输。",
+          "chunk_id": "06-应用层.md#c0088",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q028",
+      "matches": [
+        {
+          "evidence": "尽管IP数据报首部包含源IP地址，但路由器仅依据目的IP地址进行转发。",
+          "chunk_id": "04-网络层.md#c0072",
+          "method": "substring"
+        },
+        {
+          "evidence": "每当经过路由器转发时，\n都会被解封装并重新封装，MAC 帧的源地址和目的地址都随之改变，这决定了MAC 地\n址无法用于跨网络通信。",
+          "chunk_id": "04-网络层.md#c0072",
+          "method": "substring"
+        },
+        {
+          "evidence": "IP数据报经过多次路由转发抵达目的网络后，在局域网内通过 ARP获取目\n的主机的MAC地址，将IP数据报封装为MAC顿并直接交付给目的主机。",
+          "chunk_id": "04-网络层.md#c0072",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q029",
+      "matches": [
+        {
+          "evidence": "发送时延=分组长度/发送速率",
+          "chunk_id": "01-计算机网络体系结构.md#c0023",
+          "method": "substring"
+        },
+        {
+          "evidence": "发送时延（也称传输时延）。节点将分组的所有比特推入链路所需的时间，即从发",
+          "chunk_id": "01-计算机网络体系结构.md#c0023",
+          "method": "substring"
+        },
+        {
+          "evidence": "传播时延=信道长度/电磁波在信道上的传播速率",
+          "chunk_id": "01-计算机网络体系结构.md#c0023",
+          "method": "substring"
+        }
+      ]
+    },
+    {
+      "id": "q030",
+      "matches": [
+        {
+          "evidence": "初始 cwnd=1，A 发送第1个报文段；收到确认后，cwnd 增至 2，接着发送2个报文段；收到这\n2个确认后，cwnd增至4，下一轮便可发送4个报文段，依此类推。",
+          "chunk_id": "05-传输层.md#c0075",
+          "method": "substring"
+        }
+      ]
+    }
+  ]
+}

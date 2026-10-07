@@ -15,11 +15,11 @@
 
 ## 二、最低完成要求
 
-- [ ] 构建垂直领域知识库与评测问题集
-- [ ] 完成基础 RAG Baseline
+- [x] 构建垂直领域知识库与评测问题集
+- [x] 完成基础 RAG Baseline
 - [ ] 至少比较两种有显著区别的检索方案（或固定 Baseline 后系统研究 chunk size、top-k、embedding 等设计对 Retrieval Recall / MRR / Hit Rate 的影响）
 - [ ] 参数 / 组件消融实验（含 Faithfulness、回答完整度等指标）
-- [ ] 错误或异常情况分析
+- [x] 错误或异常情况分析
 - [ ] 完整毕业论文
 
 ## 三、拓展目标
@@ -36,18 +36,31 @@
 
 ## 五、当前进展
 
-- 当前阶段：开题准备（选题已确认，技术路线细化中）
-- 最近完成：初始化仓库目录结构，确认论文题目与最低完成要求
-- 当前问题：垂直领域与评测问题集尚未选定
-- 下一步：确定具体垂直领域，构建知识库与评测问题集，跑通 RAG Baseline
+- 当前阶段：**eval-v2.0（238 题）已冻结**，Baseline v2.0 重跑中（检索指标已完成，生成评测后台进行）。
+- 最近完成：
+  - 构建王道 408《计算机网络》6 章 OCR 语料知识库（373,650 字符，1078 个 chunk）；
+  - 完成 30 题 v1.0 评测集标注与朴素 RAG Baseline 全链路评测；
+  - 评测口径修正：检索深度扩到 top-50、gold 升级为 chunk-level、KPC 改分词重叠、引入 Faithfulness（qwen3:4b 裁判）；
+  - eval-v2.0 扩充并冻结：从 6 份带标准答案的题库/试卷解析 382 道候选题，全自动质检（去重 66、时代/缺图过滤 27、gold 映射与答案支撑校验）后入选 208 题，合计 238 题；
+  - 输出《Baseline 问题分析报告》《实验设计文档》与 5 篇核心阅读卡。
+- 当前问题：
+  - nomic-embed-text 中文区分度不足（I01），HitRate@5=0.265 / MRR=0.164，待 E2 换 embedding；
+  - 对比型题目检索命中但答案覆盖低（I06），待 query rewrite 实验。
+- 下一步：
+  1. Baseline v2.0 完整重跑（生成 + Faithfulness）；
+  2. 进入 E1/E2 检索方案与消融实验。
 
 ## 六、主要实验结果
 
 | Experiment | Result | Status |
 |---|---|---|
-| baseline（基础 RAG） | - | 未开始 |
+| baseline v1.0（30 题，旧口径） | HitRate@5=0.467 / MRR=0.276 / KPC=0.436 / CitationRate=0.60 | 已完成 |
+| baseline v2.0 检索（238 题，新口径，--no-gen） | HitRate@5=0.265 / HitRate@50=0.656 / MRR=0.164 | 已完成 |
+| baseline v2.0 完整（含生成 + Faithfulness） | 后台运行中 | 进行中 |
 | exp01（检索方案对比） | - | 未开始 |
-| exp02（参数消融：chunk size / top-k / embedding） | - | 未开始 |
+| exp02（参数消融：chunk / top-k / embedding） | - | 未开始 |
+
+> v1.0 详细结果见 `results/baseline/summary.json`；v2.0 见 `results/baseline_v2/summary.json` 与 `data/eval/audit_report_v2.0.md`。
 
 ## 七、仓库目录说明
 
@@ -67,9 +80,11 @@
 
 ## 八、本人主要贡献
 
-明确说明本人完成的代码、实验、数据和论文工作。若使用第三方项目，应注明来源。
-
-> 待填写（随论文推进持续更新）。
+- 构建领域语料与评测集：完成《计算机网络》6 章 OCR 文本清洗、切分、索引，以及 30 题试点评测集标注；
+- 实现朴素 RAG Baseline：包括文档加载、固定字符切分、FAISS 稠密检索、Ollama 本地生成、检索与生成指标计算；
+- 诊断分析：基于 k=100 复算与相似度分布分析，定位当前 Baseline 瓶颈在于 embedding 中文区分度不足与排序偏后，撰写问题分析报告；
+- 实验设计：制定 E0–E4 五类实验、对照组命名规范、预设成功判据与失败根因编码表；
+- 代码与文档维护：仓库目录结构、README、里程碑、周报、阅读卡、指标口径修正。
 
 ## 九、参考项目与第三方代码
 
@@ -79,9 +94,24 @@
 
 ## 十、环境与复现
 
-Python / MCU / FPGA / OS / 依赖版本等。
+- OS：Windows 11
+- Python：3.13.12（项目虚拟环境 `F:\undergraduate\.venv`）
+- 核心依赖：LangChain / Ollama / FAISS / PyMuPDF / RapidOCR / jieba / rank-bm25
+- 本地大模型：Ollama + `qwen3:4b`（生成）+ `nomic-embed-text`（嵌入）
+- 模型路径：`OLLAMA_MODELS=D:\Model`
 
-> 待填写。
+复现命令：
+
+```bash
+# 1. 建索引（分批嵌入，约 11 秒）
+python -m src.index
+
+# 2. 只评检索指标（秒级）
+python -m src.evaluate --no-gen
+
+# 3. 完整评测（检索 + 生成 + Faithfulness，约 25–40 分钟）
+python -m src.evaluate
+```
 
 ---
 

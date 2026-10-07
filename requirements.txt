@@ -11,6 +11,12 @@ langchain-text-splitters>=0.3
 faiss-cpu>=1.9
 unstructured[md]>=0.16        # Markdown 加载（[md] 含 markdown 解析依赖）
 pypdf>=5.0                    # PDF 加载
+pymupdf>=1.24                 # PDF 渲染与 OCR 前置
+rapidocr-onnxruntime>=1.2     # 试卷/扫描件 OCR
+
+# ===== 检索实验 =====
+jieba>=0.42                   # 中文分词（BM25 与指标放宽）
+rank-bm25>=0.2.2              # BM25 基线
 
 # ===== 通用 =====
 PyYAML>=6.0

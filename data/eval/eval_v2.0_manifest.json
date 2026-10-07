@@ -1,0 +1,43 @@
+{
+  "version": "2.0",
+  "created": "2026-10-07",
+  "note": "新题源均带标准答案；A1 去重 / A2 gold 映射 / A3 答案支撑 / A4 时代缺图过滤全自动质检，无需人工填表",
+  "total": 238,
+  "from_v1": 30,
+  "new": 208,
+  "type_distribution": {
+    "事实型": 147,
+    "对比型": 17,
+    "过程型": 20,
+    "多跳型": 9,
+    "计算型": 45
+  },
+  "source_parse_stats": {
+    "题库打印版.txt": 102,
+    "技术题库yscl_ocr.txt": 187,
+    "期末试题及答案.txt": 26,
+    "试题及答案.txt": 50,
+    "笔试题.txt": 17
+  },
+  "source_final_stats": {
+    "题库打印版": 65,
+    "技术题库yscl": 86,
+    "期末试题及答案": 23,
+    "02141试题": 23,
+    "笔试题": 11
+  },
+  "audit": {
+    "dropped_duplicate": 66,
+    "dropped_era_or_figure": 27,
+    "dropped_no_gold": 0,
+    "dropped_low_support": 81
+  },
+  "sha256": "188d98746d6ab91eca9364545114166d9dba949382e8ed8f9f7a6d3975130112",
+  "sources": [
+    "F:\\下载\\hyperdown-client-windows-amd64\\Downloads\\计算机网络技术题库(密码yscl).pdf",
+    "F:\\下载\\hyperdown-client-windows-amd64\\Downloads\\计算机网络\\计算机网络\\计算机网络试题库含答案(个人整理打印版).pdf",
+    "F:\\下载\\hyperdown-client-windows-amd64\\Downloads\\计算机网络\\计算机网络\\计算机网络期末试题及答案.pdf",
+    "F:\\下载\\hyperdown-client-windows-amd64\\Downloads\\计算机网络\\计算机网络\\计算机网络试题及答案.pdf",
+    "F:\\下载\\hyperdown-client-windows-amd64\\Downloads\\计算机网络\\计算机网络\\计算机网络笔试题.pdf"
+  ]
+}

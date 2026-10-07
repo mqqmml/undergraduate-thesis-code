@@ -3,7 +3,7 @@
 # 改这个文件即可切换实验配置，代码里不写死任何超参
 # ============================================================
 
-name: baseline
+name: baseline_v2
 description: 朴素 RAG（固定切分、单一稠密向量检索、固定 Top-k、无重排与查询改写）
 
 # ---------- 语料 ----------
@@ -58,7 +58,7 @@ generate:
 
 # ---------- 评测 ----------
 eval:
-  questions: data/eval/questions.jsonl
+  questions: data/eval/questions_v2.0.jsonl
   # 用于计算 HitRate@k / Recall@k（会与 top_k 取并集）
   # v2.0 把检索深度扩到 50，以区分 retrieval_miss / rank_miss
   k_values: [1, 3, 5, 10, 20, 50]
