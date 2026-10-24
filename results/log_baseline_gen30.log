@@ -1,0 +1,9 @@
+[evaluate] 载入评测题 30 道：F:\undergraduate\data\eval\questions.jsonl
+[evaluate] 启用 Faithfulness（LLM 裁判），每题会额外调一次裁判模型
+评测中:   0%|                                            | 0/30 [00:00<?, ?it/s][index] embedding model = nomic-embed-text
+[generate] llm model = qwen3:4b, temperature = 0
+Building prefix dict from the default dictionary ...
+Loading model from cache C:\Users\mawulifu\AppData\Local\Temp\jieba.cache
+Loading model cost 0.435 seconds.
+Prefix dict has been built successfully.
+[judge] 裁判模型 = qwen3:4b, temperature = 0

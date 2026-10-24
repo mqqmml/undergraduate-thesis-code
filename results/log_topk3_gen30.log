@@ -1,0 +1,52 @@
+[evaluate] 覆盖配置：mode=bm25 top_k=3 -> 实验名 e3-bm25-1024-rerank-k3
+[evaluate] 载入评测题 238 道：F:\undergraduate\data\eval\questions_v2.0.jsonl
+[evaluate] gold_map 覆盖 30/30 题；空映射 0 题
+[evaluate] 启用 Faithfulness（LLM 裁判），每题会额外调一次裁判模型
+评测中:   0%|                                            | 0/30 [00:00<?, ?it/s]Building prefix dict from the default dictionary ...
+Loading model from cache C:\Users\mawulifu\AppData\Local\Temp\jieba.cache
+Loading model cost 0.586 seconds.
+Prefix dict has been built successfully.
+[retrieve] BM25 索引就绪：638 个 chunk
+[rerank] 加载交叉编码器 F:\undergraduate\models\bge-reranker-base（device=cpu）...
+
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 201/201 [00:00<00:00, 19685.59it/s]
+[generate] llm model = qwen3:4b, temperature = 0
+[judge] 裁判模型 = qwen3:4b, temperature = 0
+评测中:   3%|█                                | 1/30 [02:19<1:07:26, 139.54s/it]评测中:   7%|██▏                              | 2/30 [04:41<1:05:46, 140.94s/it]评测中:  10%|███▌                               | 3/30 [06:44<59:49, 132.96s/it]评测中:  13%|████▋                              | 4/30 [08:31<53:05, 122.53s/it]评测中:  17%|█████▊                             | 5/30 [10:42<52:18, 125.52s/it][judge] Faithfulness 解析失败: Expecting value: line 1 column 2 (char 1)
+评测中:  20%|███████                            | 6/30 [13:18<54:25, 136.05s/it]评测中:  23%|████████▏                          | 7/30 [15:40<52:53, 137.97s/it]评测中:  27%|█████████▎                         | 8/30 [17:46<49:09, 134.07s/it]评测中:  30%|██████████▌                        | 9/30 [20:33<50:34, 144.49s/it]评测中:  33%|███████████▎                      | 10/30 [23:10<49:24, 148.21s/it][judge] Faithfulness 解析失败: 未找到 JSON 数组
+评测中:  37%|███████████▋                    | 11/30 [36:41<1:51:10, 351.08s/it][judge] Faithfulness 解析失败: 未找到 JSON 数组
+评测中:  40%|████████████▊                   | 12/30 [39:36<1:29:14, 297.46s/it][judge] Faithfulness 解析失败: Expecting value: line 1 column 2 (char 1)
+评测中:  43%|█████████████▊                  | 13/30 [42:06<1:11:40, 252.98s/it][judge] Faithfulness 解析失败: 未找到 JSON 数组
+评测中:  47%|██████████████▉                 | 14/30 [44:58<1:00:56, 228.52s/it]评测中:  50%|█████████████████                 | 15/30 [47:03<49:17, 197.17s/it]评测中:  53%|██████████████████▏               | 16/30 [50:05<44:56, 192.63s/it][judge] Faithfulness 解析失败: 未找到 JSON 数组
+评测中:  57%|███████████████████▎              | 17/30 [52:56<40:19, 186.10s/it]评测中:  60%|████████████████████▍             | 18/30 [55:08<33:56, 169.74s/it]评测中:  63%|█████████████████████▌            | 19/30 [57:53<30:53, 168.51s/it]评测中:  67%|█████████████████████▎          | 20/30 [1:00:08<26:23, 158.32s/it][judge] Faithfulness 解析失败: Expecting value: line 1 column 2 (char 1)
+评测中:  70%|██████████████████████▍         | 21/30 [1:02:33<23:08, 154.26s/it][judge] Faithfulness 解析失败: Expecting value: line 1 column 2 (char 1)
+评测中:  73%|███████████████████████▍        | 22/30 [1:05:10<20:42, 155.28s/it]评测中:  77%|████████████████████████▌       | 23/30 [1:07:03<16:37, 142.57s/it][judge] Faithfulness 解析失败: 未找到 JSON 数组
+评测中:  80%|█████████████████████████▌      | 24/30 [1:09:48<14:56, 149.34s/it][judge] Faithfulness 解析失败: 未找到 JSON 数组
+评测中:  83%|██████████████████████████▋     | 25/30 [1:12:23<12:34, 150.87s/it]评测中:  87%|███████████████████████████▋    | 26/30 [1:14:58<10:08, 152.21s/it][judge] Faithfulness 解析失败: 未找到 JSON 数组
+评测中:  90%|████████████████████████████▊   | 27/30 [1:18:13<08:14, 164.89s/it]评测中:  93%|█████████████████████████████▊  | 28/30 [1:20:45<05:22, 161.21s/it][judge] Faithfulness 解析失败: Expecting value: line 1 column 2 (char 1)
+评测中:  97%|██████████████████████████████▉ | 29/30 [1:24:18<02:56, 176.80s/it]评测中: 100%|████████████████████████████████| 30/30 [1:27:00<00:00, 172.36s/it]评测中: 100%|████████████████████████████████| 30/30 [1:27:00<00:00, 174.03s/it]
+
+================ Baseline 评测结果 ================
+  n_questions          30
+  HitRate@1            0.5333
+  Recall@1             0.45
+  HitRate@3            0.8
+  Recall@3             0.6778
+  HitRate@5            0.9
+  Recall@5             0.8111
+  HitRate@10           0.9667
+  Recall@10            0.8944
+  HitRate@20           1.0
+  Recall@20            0.9444
+  HitRate@50           1.0
+  Recall@50            0.9444
+  MRR                  0.6981
+  KeyPointCoverage     0.8544
+  CitationRate         0.9667
+  Faithfulness         0.7222
+  失败类型分布          {'generation_miss': 0.0333, 'ok': 0.7667, 'rank_miss': 0.2}
+  耗时                  5220.9s
+  明细                  F:\undergraduate\results\e3-bm25-1024-rerank-k3\per_question.csv
+  汇总                  F:\undergraduate\results\e3-bm25-1024-rerank-k3\summary.json
+==================================================
+

@@ -1,0 +1,169 @@
+{
+  "n_questions": 30,
+  "HitRate@1": 0.5333,
+  "Recall@1": 0.45,
+  "HitRate@3": 0.8,
+  "Recall@3": 0.6778,
+  "HitRate@5": 0.9,
+  "Recall@5": 0.8111,
+  "HitRate@10": 0.9667,
+  "Recall@10": 0.8944,
+  "HitRate@20": 1.0,
+  "Recall@20": 0.9444,
+  "HitRate@50": 1.0,
+  "Recall@50": 0.9444,
+  "MRR": 0.6981,
+  "KeyPointCoverage": 0.8906,
+  "CitationRate": 0.7,
+  "Faithfulness": 0.7067,
+  "failure_distribution": {
+    "ok": 0.9,
+    "rank_miss": 0.1
+  },
+  "failure_counts": {
+    "ok": 27,
+    "rank_miss": 3
+  },
+  "by_type": {
+    "事实型": {
+      "n_questions": 8,
+      "HitRate@1": 0.625,
+      "Recall@1": 0.625,
+      "HitRate@3": 0.75,
+      "Recall@3": 0.75,
+      "HitRate@5": 0.875,
+      "Recall@5": 0.8125,
+      "HitRate@10": 1.0,
+      "Recall@10": 1.0,
+      "HitRate@20": 1.0,
+      "Recall@20": 1.0,
+      "HitRate@50": 1.0,
+      "Recall@50": 1.0,
+      "MRR": 0.7188,
+      "KeyPointCoverage": 0.9583,
+      "CitationRate": 1.0,
+      "Faithfulness": 0.8333,
+      "failure_distribution": {
+        "ok": 0.875,
+        "rank_miss": 0.125
+      },
+      "failure_counts": {
+        "ok": 7,
+        "rank_miss": 1
+      }
+    },
+    "多跳型": {
+      "n_questions": 4,
+      "HitRate@1": 0.25,
+      "Recall@1": 0.25,
+      "HitRate@3": 0.75,
+      "Recall@3": 0.625,
+      "HitRate@5": 1.0,
+      "Recall@5": 0.7083,
+      "HitRate@10": 1.0,
+      "Recall@10": 0.7083,
+      "HitRate@20": 1.0,
+      "Recall@20": 0.8333,
+      "HitRate@50": 1.0,
+      "Recall@50": 0.8333,
+      "MRR": 0.5625,
+      "KeyPointCoverage": 0.8125,
+      "CitationRate": 0.75,
+      "Faithfulness": 1.0,
+      "failure_distribution": {
+        "ok": 1.0
+      },
+      "failure_counts": {
+        "ok": 4
+      }
+    },
+    "对比型": {
+      "n_questions": 8,
+      "HitRate@1": 0.5,
+      "Recall@1": 0.375,
+      "HitRate@3": 0.875,
+      "Recall@3": 0.6042,
+      "HitRate@5": 1.0,
+      "Recall@5": 0.875,
+      "HitRate@10": 1.0,
+      "Recall@10": 0.875,
+      "HitRate@20": 1.0,
+      "Recall@20": 0.875,
+      "HitRate@50": 1.0,
+      "Recall@50": 0.875,
+      "MRR": 0.7188,
+      "KeyPointCoverage": 0.8812,
+      "CitationRate": 0.375,
+      "Faithfulness": 0.5714,
+      "failure_distribution": {
+        "ok": 1.0
+      },
+      "failure_counts": {
+        "ok": 8
+      }
+    },
+    "计算型": {
+      "n_questions": 2,
+      "HitRate@1": 0.0,
+      "Recall@1": 0.0,
+      "HitRate@3": 0.0,
+      "Recall@3": 0.0,
+      "HitRate@5": 0.0,
+      "Recall@5": 0.0,
+      "HitRate@10": 0.5,
+      "Recall@10": 0.5,
+      "HitRate@20": 1.0,
+      "Recall@20": 1.0,
+      "HitRate@50": 1.0,
+      "Recall@50": 1.0,
+      "MRR": 0.0958,
+      "KeyPointCoverage": 0.75,
+      "CitationRate": 0.5,
+      "Faithfulness": 0.8334,
+      "failure_distribution": {
+        "rank_miss": 1.0
+      },
+      "failure_counts": {
+        "rank_miss": 2
+      }
+    },
+    "过程型": {
+      "n_questions": 8,
+      "HitRate@1": 0.75,
+      "Recall@1": 0.5625,
+      "HitRate@3": 1.0,
+      "Recall@3": 0.875,
+      "HitRate@5": 1.0,
+      "Recall@5": 1.0,
+      "HitRate@10": 1.0,
+      "Recall@10": 1.0,
+      "HitRate@20": 1.0,
+      "Recall@20": 1.0,
+      "HitRate@50": 1.0,
+      "Recall@50": 1.0,
+      "MRR": 0.875,
+      "KeyPointCoverage": 0.9062,
+      "CitationRate": 0.75,
+      "Faithfulness": 0.5,
+      "failure_distribution": {
+        "ok": 1.0
+      },
+      "failure_counts": {
+        "ok": 8
+      }
+    }
+  },
+  "experiment": "e3-bm25-1024-rerank-k5",
+  "config": "F:\\undergraduate\\configs\\e3-bm25-1024-rerank.yaml",
+  "chunk_size": 1024,
+  "chunk_overlap": 50,
+  "retrieve_mode": "bm25",
+  "top_k": 5,
+  "embedding_model": "nomic-embed-text",
+  "llm_model": "qwen3:4b",
+  "with_generation": true,
+  "with_faithfulness": true,
+  "elapsed_sec": 4232.2,
+  "questions_path": "F:\\undergraduate\\data\\eval\\questions_v2.0.jsonl",
+  "questions_sha256": "188d98746d6ab91e"
+}
