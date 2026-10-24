@@ -1,0 +1,177 @@
+{
+  "n_questions": 238,
+  "HitRate@1": 0.2647,
+  "Recall@1": 0.0599,
+  "HitRate@3": 0.4874,
+  "Recall@3": 0.1309,
+  "HitRate@5": 0.5756,
+  "Recall@5": 0.1776,
+  "HitRate@10": 0.7353,
+  "Recall@10": 0.2823,
+  "HitRate@20": 0.8739,
+  "Recall@20": 0.4262,
+  "HitRate@50": 0.9454,
+  "Recall@50": 0.5828,
+  "MRR": 0.4145,
+  "KeyPointCoverage": NaN,
+  "CitationRate": NaN,
+  "Faithfulness": NaN,
+  "failure_distribution": {
+    "ok": 0.5756,
+    "retrieval_miss": 0.4244
+  },
+  "failure_counts": {
+    "retrieval_miss": 101,
+    "ok": 137
+  },
+  "by_type": {
+    "事实型": {
+      "n_questions": 147,
+      "HitRate@1": 0.2993,
+      "Recall@1": 0.0684,
+      "HitRate@3": 0.4626,
+      "Recall@3": 0.1244,
+      "HitRate@5": 0.5374,
+      "Recall@5": 0.1632,
+      "HitRate@10": 0.7007,
+      "Recall@10": 0.2605,
+      "HitRate@20": 0.8503,
+      "Recall@20": 0.4142,
+      "HitRate@50": 0.932,
+      "Recall@50": 0.5681,
+      "MRR": 0.4241,
+      "KeyPointCoverage": NaN,
+      "CitationRate": NaN,
+      "Faithfulness": NaN,
+      "failure_distribution": {
+        "ok": 0.5374,
+        "retrieval_miss": 0.4626
+      },
+      "failure_counts": {
+        "retrieval_miss": 68,
+        "ok": 79
+      }
+    },
+    "多跳型": {
+      "n_questions": 9,
+      "HitRate@1": 0.1111,
+      "Recall@1": 0.0222,
+      "HitRate@3": 0.4444,
+      "Recall@3": 0.137,
+      "HitRate@5": 0.4444,
+      "Recall@5": 0.137,
+      "HitRate@10": 0.8889,
+      "Recall@10": 0.2474,
+      "HitRate@20": 1.0,
+      "Recall@20": 0.3529,
+      "HitRate@50": 1.0,
+      "Recall@50": 0.5225,
+      "MRR": 0.3558,
+      "KeyPointCoverage": NaN,
+      "CitationRate": NaN,
+      "Faithfulness": NaN,
+      "failure_distribution": {
+        "ok": 0.4444,
+        "retrieval_miss": 0.5556
+      },
+      "failure_counts": {
+        "ok": 4,
+        "retrieval_miss": 5
+      }
+    },
+    "对比型": {
+      "n_questions": 17,
+      "HitRate@1": 0.2353,
+      "Recall@1": 0.0545,
+      "HitRate@3": 0.5882,
+      "Recall@3": 0.1526,
+      "HitRate@5": 0.7059,
+      "Recall@5": 0.2158,
+      "HitRate@10": 0.7059,
+      "Recall@10": 0.3013,
+      "HitRate@20": 0.9412,
+      "Recall@20": 0.4419,
+      "HitRate@50": 1.0,
+      "Recall@50": 0.6127,
+      "MRR": 0.4215,
+      "KeyPointCoverage": NaN,
+      "CitationRate": NaN,
+      "Faithfulness": NaN,
+      "failure_distribution": {
+        "ok": 0.7059,
+        "retrieval_miss": 0.2941
+      },
+      "failure_counts": {
+        "ok": 12,
+        "retrieval_miss": 5
+      }
+    },
+    "计算型": {
+      "n_questions": 45,
+      "HitRate@1": 0.2444,
+      "Recall@1": 0.0556,
+      "HitRate@3": 0.5556,
+      "Recall@3": 0.1448,
+      "HitRate@5": 0.6444,
+      "Recall@5": 0.2041,
+      "HitRate@10": 0.7556,
+      "Recall@10": 0.3237,
+      "HitRate@20": 0.8667,
+      "Recall@20": 0.4581,
+      "HitRate@50": 0.9556,
+      "Recall@50": 0.62,
+      "MRR": 0.4157,
+      "KeyPointCoverage": NaN,
+      "CitationRate": NaN,
+      "Faithfulness": NaN,
+      "failure_distribution": {
+        "ok": 0.6444,
+        "retrieval_miss": 0.3556
+      },
+      "failure_counts": {
+        "retrieval_miss": 16,
+        "ok": 29
+      }
+    },
+    "过程型": {
+      "n_questions": 20,
+      "HitRate@1": 0.15,
+      "Recall@1": 0.0283,
+      "HitRate@3": 0.45,
+      "Recall@3": 0.1258,
+      "HitRate@5": 0.65,
+      "Recall@5": 0.21,
+      "HitRate@10": 0.9,
+      "Recall@10": 0.3492,
+      "HitRate@20": 0.95,
+      "Recall@20": 0.4617,
+      "HitRate@50": 0.95,
+      "Recall@50": 0.6083,
+      "MRR": 0.3622,
+      "KeyPointCoverage": NaN,
+      "CitationRate": NaN,
+      "Faithfulness": NaN,
+      "failure_distribution": {
+        "ok": 0.65,
+        "retrieval_miss": 0.35
+      },
+      "failure_counts": {
+        "ok": 13,
+        "retrieval_miss": 7
+      }
+    }
+  },
+  "experiment": "e2-chunk256-hybrid",
+  "config": "F:\\undergraduate\\configs\\e2-chunk256.yaml",
+  "chunk_size": 256,
+  "chunk_overlap": 50,
+  "retrieve_mode": "hybrid",
+  "top_k": 5,
+  "embedding_model": "nomic-embed-text",
+  "llm_model": null,
+  "with_generation": false,
+  "with_faithfulness": false,
+  "elapsed_sec": 9.8,
+  "questions_path": "F:\\undergraduate\\data\\eval\\questions_v2.0.jsonl",
+  "questions_sha256": "188d98746d6ab91e"
+}

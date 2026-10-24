@@ -1,0 +1,14 @@
+﻿experiment,retrieve_mode,chunk_size,top_k,embedding_model,HitRate@5,HitRate@20,HitRate@50,Recall@5,Recall@50,MRR,KeyPointCoverage,Faithfulness,CitationRate
+e2-chunk1024-bm25,bm25,1024,5,nomic-embed-text,0.7773,0.9202,0.979,0.6092,0.9363,0.5875,nan,nan,nan
+e1-bm25,bm25,512,5,nomic-embed-text,0.7437,0.9328,0.9748,0.5791,0.9244,0.5936,nan,nan,nan
+e2-embed-bge-m3-hybrid,hybrid,512,5,bge-m3,0.7185,0.916,0.9706,0.5014,0.916,0.5173,nan,nan,nan
+e2-chunk256-bm25,bm25,256,5,nomic-embed-text,0.6849,0.8866,0.9664,0.2464,0.5943,0.5127,nan,nan,nan
+e1-hybrid,hybrid,512,5,nomic-embed-text,0.5798,0.8697,0.958,0.3669,0.8887,0.4092,nan,nan,nan
+e2-chunk256-hybrid,hybrid,256,5,nomic-embed-text,0.5756,0.8739,0.9454,0.1776,0.5828,0.4145,nan,nan,nan
+e2-embed-bge-m3-dense,dense,512,5,bge-m3,0.5588,0.7857,0.895,0.3789,0.7584,0.3691,nan,nan,nan
+e2-chunk1024-hybrid,hybrid,1024,5,nomic-embed-text,0.5126,0.9034,0.9664,0.3445,0.9048,0.3679,nan,nan,nan
+e2-chunk256,dense,256,5,nomic-embed-text,0.3109,0.5462,0.7101,0.0875,0.341,0.2172,nan,nan,nan
+e1-dense,dense,512,5,nomic-embed-text,0.2647,0.479,0.6555,0.1527,0.4762,0.164,nan,nan,nan
+e2-chunk1024,dense,1024,5,nomic-embed-text,0.2059,0.4286,0.6176,0.1296,0.4517,0.1292,nan,nan,nan
+e3-bm25-1024-rerank,bm25,1024,5,nomic-embed-text,0.6639,0.9412,0.979,0.4909,0.9363,0.4808,nan,nan,nan
+baseline_v2,dense,512,5,nomic-embed-text,0.2647,0.479,0.6555,0.1527,0.4762,0.164,0.494,0.3386,0.5
