@@ -8,20 +8,170 @@
   "Recall@5": 0.3056,
   "HitRate@10": 0.5667,
   "Recall@10": 0.3944,
-  "MRR": 0.2761,
-  "KeyPointCoverage": 0.4361,
-  "CitationRate": 0.6,
+  "HitRate@20": 0.7,
+  "Recall@20": 0.5667,
+  "HitRate@50": 0.7333,
+  "Recall@50": 0.6222,
+  "MRR": 0.2863,
+  "KeyPointCoverage": 0.5611,
+  "CitationRate": 0.5667,
+  "Faithfulness": 0.375,
   "failure_distribution": {
-    "generation_miss": 0.1667,
-    "ok": 0.3,
-    "rank_miss": 0.1,
-    "retrieval_miss": 0.4333
+    "generation_miss": 0.0667,
+    "ok": 0.4,
+    "rank_miss": 0.2667,
+    "retrieval_miss": 0.2667
   },
   "failure_counts": {
-    "retrieval_miss": 13,
-    "ok": 9,
-    "rank_miss": 3,
-    "generation_miss": 5
+    "retrieval_miss": 8,
+    "ok": 12,
+    "rank_miss": 8,
+    "generation_miss": 2
+  },
+  "by_type": {
+    "事实型": {
+      "n_questions": 8,
+      "HitRate@1": 0.0,
+      "Recall@1": 0.0,
+      "HitRate@3": 0.375,
+      "Recall@3": 0.3125,
+      "HitRate@5": 0.5,
+      "Recall@5": 0.4375,
+      "HitRate@10": 0.625,
+      "Recall@10": 0.5625,
+      "HitRate@20": 0.75,
+      "Recall@20": 0.75,
+      "HitRate@50": 0.75,
+      "Recall@50": 0.75,
+      "MRR": 0.2208,
+      "KeyPointCoverage": 0.7917,
+      "CitationRate": 0.875,
+      "Faithfulness": 0.5714,
+      "failure_distribution": {
+        "ok": 0.5,
+        "rank_miss": 0.25,
+        "retrieval_miss": 0.25
+      },
+      "failure_counts": {
+        "retrieval_miss": 2,
+        "ok": 4,
+        "rank_miss": 2
+      }
+    },
+    "多跳型": {
+      "n_questions": 4,
+      "HitRate@1": 0.25,
+      "Recall@1": 0.25,
+      "HitRate@3": 0.5,
+      "Recall@3": 0.375,
+      "HitRate@5": 0.5,
+      "Recall@5": 0.375,
+      "HitRate@10": 0.75,
+      "Recall@10": 0.5,
+      "HitRate@20": 0.75,
+      "Recall@20": 0.5,
+      "HitRate@50": 0.75,
+      "Recall@50": 0.625,
+      "MRR": 0.4167,
+      "KeyPointCoverage": 0.75,
+      "CitationRate": 0.5,
+      "Faithfulness": 0.0,
+      "failure_distribution": {
+        "ok": 0.5,
+        "rank_miss": 0.25,
+        "retrieval_miss": 0.25
+      },
+      "failure_counts": {
+        "ok": 2,
+        "rank_miss": 1,
+        "retrieval_miss": 1
+      }
+    },
+    "对比型": {
+      "n_questions": 8,
+      "HitRate@1": 0.125,
+      "Recall@1": 0.0417,
+      "HitRate@3": 0.375,
+      "Recall@3": 0.125,
+      "HitRate@5": 0.5,
+      "Recall@5": 0.2292,
+      "HitRate@10": 0.5,
+      "Recall@10": 0.2292,
+      "HitRate@20": 0.625,
+      "Recall@20": 0.4375,
+      "HitRate@50": 0.75,
+      "Recall@50": 0.5417,
+      "MRR": 0.2705,
+      "KeyPointCoverage": 0.2188,
+      "CitationRate": 0.375,
+      "Faithfulness": 0.1667,
+      "failure_distribution": {
+        "generation_miss": 0.25,
+        "ok": 0.25,
+        "rank_miss": 0.25,
+        "retrieval_miss": 0.25
+      },
+      "failure_counts": {
+        "ok": 2,
+        "retrieval_miss": 2,
+        "generation_miss": 2,
+        "rank_miss": 2
+      }
+    },
+    "计算型": {
+      "n_questions": 2,
+      "HitRate@1": 0.0,
+      "Recall@1": 0.0,
+      "HitRate@3": 0.0,
+      "Recall@3": 0.0,
+      "HitRate@5": 0.0,
+      "Recall@5": 0.0,
+      "HitRate@10": 0.0,
+      "Recall@10": 0.0,
+      "HitRate@20": 0.0,
+      "Recall@20": 0.0,
+      "HitRate@50": 0.0,
+      "Recall@50": 0.0,
+      "MRR": 0.0,
+      "KeyPointCoverage": 0.75,
+      "CitationRate": 0.5,
+      "Faithfulness": 1.0,
+      "failure_distribution": {
+        "retrieval_miss": 1.0
+      },
+      "failure_counts": {
+        "retrieval_miss": 2
+      }
+    },
+    "过程型": {
+      "n_questions": 8,
+      "HitRate@1": 0.25,
+      "Recall@1": 0.1875,
+      "HitRate@3": 0.375,
+      "Recall@3": 0.25,
+      "HitRate@5": 0.5,
+      "Recall@5": 0.2917,
+      "HitRate@10": 0.625,
+      "Recall@10": 0.4375,
+      "HitRate@20": 0.875,
+      "Recall@20": 0.6875,
+      "HitRate@50": 0.875,
+      "Recall@50": 0.7292,
+      "MRR": 0.374,
+      "KeyPointCoverage": 0.5312,
+      "CitationRate": 0.5,
+      "Faithfulness": 0.375,
+      "failure_distribution": {
+        "ok": 0.5,
+        "rank_miss": 0.375,
+        "retrieval_miss": 0.125
+      },
+      "failure_counts": {
+        "ok": 4,
+        "rank_miss": 3,
+        "retrieval_miss": 1
+      }
+    }
   },
   "experiment": "baseline",
   "config": "F:\\undergraduate\\configs\\baseline.yaml",
@@ -32,5 +182,8 @@
   "embedding_model": "nomic-embed-text",
   "llm_model": "qwen3:4b",
   "with_generation": true,
-  "elapsed_sec": 1533.1
+  "with_faithfulness": true,
+  "elapsed_sec": 3712.0,
+  "questions_path": "F:\\undergraduate\\data\\eval\\questions.jsonl",
+  "questions_sha256": "4fa22ad3651c9202"
 }
