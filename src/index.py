@@ -114,15 +114,21 @@ def load_chunk_map(cfg: Dict[str, Any]) -> Dict[str, dict]:
 
 
 if __name__ == "__main__":
-    """python -m src.index —— 全量重建 Baseline 索引"""
-    import sys
+    """python -m src.index [--config configs/xxx.yaml] —— 按配置重建索引
+
+    不同 chunk size / embedding 用不同 persist_dir，互不覆盖。
+    """
+    import argparse
 
     from src.chunk import dump_chunks, split_documents
     from src.config import load_config
     from src.ingest import load_documents
 
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    cfg = load_config()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--config", default=None, help="配置文件路径，默认 configs/baseline.yaml")
+    args = ap.parse_args()
+
+    cfg = load_config(args.config)
     docs = load_documents(cfg["corpus"]["raw_dir"], cfg["corpus"].get("patterns"))
     chunks = split_documents(
         docs,
@@ -130,5 +136,7 @@ if __name__ == "__main__":
         overlap=cfg["chunk"]["overlap"],
         splitter=cfg["chunk"].get("splitter", "recursive"),
     )
-    dump_chunks(chunks)
+    # 只在 baseline 配置下落一份全局 chunks 快照，避免实验配置互相覆盖
+    if cfg["index"]["persist_dir"].endswith("baseline"):
+        dump_chunks(chunks)
     build_index(chunks, cfg)

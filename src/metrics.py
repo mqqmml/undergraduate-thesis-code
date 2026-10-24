@@ -203,29 +203,47 @@ def classify_failure(hits: List[dict], gold: dict | Sequence[str], answer: str,
 
 # ---------- 聚合 ----------
 
-def aggregate(rows: List[Dict[str, Any]], k_values: Sequence[int]) -> Dict[str, Any]:
-    """把逐题结果聚合成 summary。"""
+def _mean(rows: List[Dict[str, Any]], key: str) -> float:
+    """忽略 nan / 缺失值求均值。"""
+    vals = [r[key] for r in rows if isinstance(r.get(key), (int, float)) and r[key] == r[key]]
+    return round(sum(vals) / len(vals), 4) if vals else float("nan")
+
+
+def _block(rows: List[Dict[str, Any]], k_values: Sequence[int]) -> Dict[str, Any]:
+    """一组逐题结果 -> 指标块（整体与分题型共用）。"""
     n = len(rows)
     if n == 0:
-        return {"n_questions": 0}
-
-    def mean(key: str) -> float:
-        vals = [r[key] for r in rows if isinstance(r.get(key), (int, float)) and r[key] == r[key]]
-        return round(sum(vals) / len(vals), 4) if vals else float("nan")
-
-    summary: Dict[str, Any] = {"n_questions": n}
+        return {}
+    out: Dict[str, Any] = {"n_questions": n}
     for k in k_values:
-        summary[f"HitRate@{k}"] = mean(f"hit@{k}")
-        summary[f"Recall@{k}"] = mean(f"recall@{k}")
-    summary["MRR"] = mean("mrr")
-    summary["KeyPointCoverage"] = mean("keypoint_coverage")
-    summary["CitationRate"] = mean("citation_rate")
+        out[f"HitRate@{k}"] = _mean(rows, f"hit@{k}")
+        out[f"Recall@{k}"] = _mean(rows, f"recall@{k}")
+    out["MRR"] = _mean(rows, "mrr")
+    out["KeyPointCoverage"] = _mean(rows, "keypoint_coverage")
+    out["CitationRate"] = _mean(rows, "citation_rate")
     if "faithfulness" in rows[0]:
-        summary["Faithfulness"] = mean("faithfulness")
+        out["Faithfulness"] = _mean(rows, "faithfulness")
 
     fails: Dict[str, int] = {}
     for r in rows:
-        fails[r.get("failure_type", "unknown")] = fails.get(r.get("failure_type", "unknown"), 0) + 1
-    summary["failure_distribution"] = {k: round(v / n, 4) for k, v in sorted(fails.items())}
-    summary["failure_counts"] = fails
+        f = r.get("failure_type", "unknown")
+        fails[f] = fails.get(f, 0) + 1
+    out["failure_distribution"] = {k: round(v / n, 4) for k, v in sorted(fails.items())}
+    out["failure_counts"] = fails
+    return out
+
+
+def aggregate(rows: List[Dict[str, Any]], k_values: Sequence[int]) -> Dict[str, Any]:
+    """把逐题结果聚合成 summary（含 by_type 分题型指标）。"""
+    if not rows:
+        return {"n_questions": 0}
+
+    summary = _block(rows, k_values)
+
+    # 分题型：题型差异是论文分析的重点（对比型/多跳型通常明显更差）
+    by_type: Dict[str, Dict[str, Any]] = {}
+    for t in sorted({str(r.get("type", "未标注")) for r in rows}):
+        sub = [r for r in rows if str(r.get("type", "未标注")) == t]
+        by_type[t] = _block(sub, k_values)
+    summary["by_type"] = by_type
     return summary

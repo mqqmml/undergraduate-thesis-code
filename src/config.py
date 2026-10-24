@@ -52,9 +52,13 @@ def env(key: str, default: str | None = None) -> str | None:
 
 
 def model_name(kind: str, cfg: dict[str, Any] | None = None) -> str:
-    """模型名优先取 .env，其次取配置 yaml。kind: llm | embedding"""
+    """模型名：配置 yaml 优先，其次 .env，最后默认值。
+
+    实验里换 embedding 必须由配置文件驱动（否则 .env 会悄悄覆盖，
+    导致"改了配置但索引没换模型"的静默错误）。
+    """
     if kind in ("llm", "generate"):
         fallback = (cfg or {}).get("generate", {}).get("model", "qwen3:4b")
-        return env("OLLAMA_LLM", fallback) or fallback
+        return fallback or env("OLLAMA_LLM", "qwen3:4b")
     fallback = (cfg or {}).get("embedding", {}).get("model", "nomic-embed-text")
-    return env("OLLAMA_EMBEDDING", fallback) or fallback
+    return fallback or env("OLLAMA_EMBEDDING", "nomic-embed-text")

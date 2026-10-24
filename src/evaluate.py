@@ -71,6 +71,20 @@ def evaluate(cfg: Dict[str, Any], with_gen: bool = True, limit: int | None = Non
     if limit:
         questions = questions[:limit]
 
+    # chunk 参数变体：gold_chunks 需按目标切分重映射（scripts/remap_gold.py 生成）
+    gold_map_path = cfg["eval"].get("gold_map")
+    if gold_map_path:
+        gm = json.loads(resolve(gold_map_path).read_text(encoding="utf-8"))
+        mapping = gm.get("mapping", gm)
+        hit = 0
+        for q in questions:
+            if q["id"] in mapping:
+                q["gold_chunks"] = mapping[q["id"]]
+                hit += 1
+        missing = [q["id"] for q in questions if not q.get("gold_chunks")]
+        print(f"[evaluate] gold_map 覆盖 {hit}/{len(questions)} 题；空映射 {len(missing)} 题"
+              + (f"（如 {missing[:5]}）" if missing else ""))
+
     k_values = sorted(set(cfg["eval"].get("k_values", [])) | {cfg["retrieve"]["top_k"]})
     max_k = max(k_values)
     min_len = cfg["eval"].get("min_evidence_len", 8)
@@ -202,9 +216,26 @@ def main() -> None:
     parser.add_argument("--config", default=None, help="配置文件路径，默认 configs/baseline.yaml")
     parser.add_argument("--no-gen", action="store_true", help="只评检索指标，不调用 LLM")
     parser.add_argument("--limit", type=int, default=None, help="只评前 N 题（调试用）")
+    parser.add_argument("--mode", default=None, choices=["dense", "bm25", "hybrid"],
+                        help="临时覆盖检索方式（用于矩阵实验，结果目录名自动加后缀）")
+    parser.add_argument("--top-k", dest="top_k", type=int, default=None,
+                        help="临时覆盖 top_k / max_context_chunks")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
+    suffix = ""
+    if args.mode:
+        cfg["retrieve"]["mode"] = args.mode
+        suffix += f"-{args.mode}"
+    if args.top_k:
+        cfg["retrieve"]["top_k"] = args.top_k
+        cfg["generate"]["max_context_chunks"] = args.top_k
+        suffix += f"-k{args.top_k}"
+    if suffix:
+        cfg["_config_name"] = f"{cfg['_config_name']}{suffix}"
+        print(f"[evaluate] 覆盖配置：mode={cfg['retrieve']['mode']} top_k={cfg['retrieve']['top_k']} "
+              f"-> 实验名 {cfg['_config_name']}")
+
     evaluate(cfg, with_gen=not args.no_gen, limit=args.limit)
 
 

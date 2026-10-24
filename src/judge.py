@@ -82,7 +82,10 @@ def faithfulness(answer: str, contexts: Sequence[str], cfg: Dict[str, Any]) -> f
     if not claims:
         return float("nan")
 
-    supported = sum(1 for c in claims if c.get("verdict") == "支持")
+    # 裁判模型偶尔会输出字符串元素或缺少 verdict 字段，统一按"无法判断"处理
+    supported = sum(
+        1 for c in claims if isinstance(c, dict) and c.get("verdict") == "支持"
+    )
     return supported / len(claims)
 
 
