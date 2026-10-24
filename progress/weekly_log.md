@@ -48,3 +48,23 @@
   - 启动 E1 检索方案对比（Dense / BM25 / Hybrid）；
   - 启动 E2 参数消融（chunk size / top-k / embedding）；
   - 引入 rerank 针对 `rank_miss` 做专项验证。
+
+## 2026-10-24
+
+- 本周计划：完成老师布置的 8 项两周任务（E1 检索对比 / E2 消融 / E3 rerank / 主结果表 / 题型分解）
+- 本周完成：
+  - **E1 检索方案对比**（238 题，chunk512，--no-gen）：Dense(nomic)=0.265、BM25=0.744、Hybrid(RRF k=60)=0.580（HitRate@5）；
+  - **E2 参数消融**（10 组全量）：chunk 256/512/1024 × {Dense, BM25, Hybrid}；embedding 换 bge-m3（dense 0.559、hybrid 0.718）；最优组合 BM25+chunk1024（HR@5=0.777，MRR=0.588）；发现 chunk 与检索方式强交互（BM25 偏好大 chunk，Dense 偏好 512）；
+  - **E3 rerank**（bge-reranker-base，CrossEncoder，ModelScope 下载）：BM25-1024+rerank 在人工 30 题 HR@5 0.633→**0.900**、MRR 0.452→**0.698**；全量 238 题 0.777→0.664（双口径，见偏差分析）；
+  - **top-k 消融**（人工 30 题，BM25-1024+rerank，k=3/5/10 含生成）：KPC 倒 U 型，峰值 k=5（0.891）；CitationRate 随 k 单调坍塌（0.967→0.700→0.133）；Faithfulness 对 k 不敏感（0.707~0.791）；
+  - **老师第⑧条验证通过**：同 30 题，检索 HR@5 0.467→0.900，KPC 0.436→0.891——检索提升真实传导到生成质量；
+  - 主结果表 `results/main_table.md`（13 实验）与分题型表 `results/by_type_table.md`（12 实验 × 5 题型）；
+  - 修复 `src/judge.py`：裁判输出格式不稳导致的崩溃（非 dict 元素按"无法判断"处理）。
+- 遇到的问题：
+  - **评测集构造偏差（重要）**：自动题 gold 由 idf 词重叠映射产生，偏向词法匹配——BM25 全量 0.744 但人工子集仅 0.533；rerank 在自动集上变差（0.777→0.664）而在人工题上大幅变好（0.633→0.900）。结论必须双口径报告，以人工子集为准；
+  - top-k 在检索层无区分度（k_values 强制深度 50），top-k 消融必须配生成评测才有意义；
+  - HuggingFace 被代理阻断，模型改从 ModelScope 直下。
+- 下周计划：
+  - 更新 README / 实验设计文档，E1~E3 结果入档；
+  - 进入 Query Rewrite 与 Agentic RAG 方向；
+  - 论文实验章节初稿。

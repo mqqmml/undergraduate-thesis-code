@@ -17,14 +17,14 @@
 
 - [x] 构建垂直领域知识库与评测问题集
 - [x] 完成基础 RAG Baseline
-- [ ] 至少比较两种有显著区别的检索方案（或固定 Baseline 后系统研究 chunk size、top-k、embedding 等设计对 Retrieval Recall / MRR / Hit Rate 的影响）
-- [ ] 参数 / 组件消融实验（含 Faithfulness、回答完整度等指标）
+- [x] 至少比较两种有显著区别的检索方案（或固定 Baseline 后系统研究 chunk size、top-k、embedding 等设计对 Retrieval Recall / MRR / Hit Rate 的影响）
+- [x] 参数 / 组件消融实验（含 Faithfulness、回答完整度等指标）
 - [x] 错误或异常情况分析
 - [ ] 完整毕业论文
 
 ## 三、拓展目标
 
-- [ ] 引入 Rerank 重排序模块
+- [x] 引入 Rerank 重排序模块
 - [ ] Query Rewrite 查询改写
 - [ ] Agentic RAG（智能体化检索增强）
 
@@ -36,22 +36,21 @@
 
 ## 五、当前进展
 
-- 当前阶段：**eval-v2.0（238 题）已冻结，Baseline v2.0 完整评测已完成**，下一步进入检索方案与参数消融实验。
+- 当前阶段：**E1 检索对比、E2 参数消融、E3 rerank 全部完成**，主结果表与分题型表已落盘，两周实验任务（老师 8 条）全部有数据支撑。
 - 最近完成：
-  - 构建王道 408《计算机网络》6 章 OCR 语料知识库（373,650 字符，1078 个 chunk）；
-  - 完成 30 题 v1.0 评测集标注与朴素 RAG Baseline 全链路评测；
-  - 评测口径修正：检索深度扩到 top-50、gold 升级为 chunk-level、KPC 改分词重叠、引入 Faithfulness（qwen3:4b 裁判）；
-  - eval-v2.0 扩充并冻结：从 6 份带标准答案的题库/试卷解析 382 道候选题，全自动质检（去重 66、时代/缺图过滤 27、gold 映射与答案支撑校验）后入选 208 题，合计 238 题；
-  - **Baseline v2.0 完整重跑完成**（238 题，检索 + 生成 + Faithfulness，耗时 6h48m）；
-  - 输出《Baseline 问题分析报告》《实验设计文档》与 5 篇核心阅读卡。
+  - E1：Dense / BM25 / Hybrid(RRF) 三方案对比（238 题）；
+  - E2：chunk 256/512/1024 × 三种检索、bge-m3 嵌入、top-k 3/5/10 生成消融，共 13 组实验；
+  - E3：bge-reranker-base 重排序，人工 30 题 HR@5 0.633→0.900；
+  - 老师第⑧条验证：同 30 题检索 HR@5 0.467→0.900，KPC 0.436→0.891，检索提升真实传导到生成质量；
+  - 发现并量化评测集构造偏差（自动题 gold 偏词法），确立"全量 + 人工子集"双口径报告规范。
 - 当前问题：
-  - **排序偏后是首要瓶颈（I09）**：失败类型中 `rank_miss` 占 39.1%（93 题）、`retrieval_miss` 占 34.5%（82 题），即证据已在 top-50 内但多数排在第 6 名之后——HitRate@5=0.265 而 @50=0.656，说明检索「找得到但排不上去」；
-  - nomic-embed-text 中文区分度不足（I01），待 E2 换 embedding；
-  - 对比型题目检索命中但答案覆盖低（I06），待 query rewrite 实验；
-  - Faithfulness 仅 0.339，生成环节幻觉明显偏多，需在 E3/E4 一并处理。
+  - 自动生成题的 gold_chunks 由 idf 词重叠映射产生，偏向词法匹配（BM25 全量 0.744 vs 人工子集 0.533），论文必须双口径报告；
+  - CitationRate 随 top-k 增大坍塌（0.967→0.700→0.133），大上下文下 qwen3:4b 不再标注引用；
+  - 对比型/多跳型题目占比偏低，query rewrite 实验待做。
 - 下一步：
-  1. 进入 E1 检索方案对比（Dense / BM25 / Hybrid）与 E2 参数消融（chunk size / top-k / embedding）；
-  2. 引入 rerank 缓解 `rank_miss`，用 query rewrite 缓解对比型与多跳型问题。
+  1. Query Rewrite 查询改写实验（缓解对比型、多跳型）；
+  2. 进入 Agentic RAG 方向；
+  3. 论文实验章节初稿。
 
 ## 六、主要实验结果
 
@@ -60,8 +59,40 @@
 | baseline v1.0（30 题，旧口径） | HitRate@5=0.467 / MRR=0.276 / KPC=0.436 / CitationRate=0.60 | 已完成 |
 | baseline v2.0 检索（238 题，新口径，--no-gen） | HitRate@5=0.265 / HitRate@50=0.656 / MRR=0.164 | 已完成 |
 | **baseline v2.0 完整（238 题，含生成 + Faithfulness）** | **HitRate@5=0.265 / @10=0.357 / @20=0.479 / @50=0.656；Recall@50=0.476；MRR=0.164；KPC=0.494；CitationRate=0.50；Faithfulness=0.339** | **已完成** |
-| exp01（检索方案对比：Dense / BM25 / Hybrid） | - | 未开始 |
-| exp02（参数消融：chunk / top-k / embedding） | - | 未开始 |
+| exp01（检索方案对比：Dense / BM25 / Hybrid） | 见下方 E1~E3 主结果 | 已完成 |
+| exp02（参数消融：chunk / top-k / embedding） | 见下方 E1~E3 主结果 | 已完成 |
+
+> 上表为 Baseline 阶段结果。E1~E3 完整矩阵见下。
+
+### E1~E3 主结果（全量 238 题，--no-gen 检索口径）
+
+| 实验 | 检索 | rerank | chunk | HR@5 | HR@50 | MRR |
+|---|---|---|---|---|---|---|
+| e2-chunk1024-bm25 | BM25 | - | 1024 | **0.777** | 0.979 | **0.588** |
+| e1-bm25 | BM25 | - | 512 | 0.744 | 0.975 | 0.594 |
+| e2-embed-bge-m3-hybrid | Hybrid | - | 512 | 0.719 | 0.971 | 0.517 |
+| e2-chunk256-bm25 | BM25 | - | 256 | 0.685 | 0.966 | 0.513 |
+| e1-hybrid | Hybrid | - | 512 | 0.580 | 0.958 | 0.409 |
+| e2-embed-bge-m3-dense | Dense(bge-m3) | - | 512 | 0.559 | 0.895 | 0.369 |
+| e1-dense | Dense(nomic) | - | 512 | 0.265 | 0.655 | 0.164 |
+| e3-bm25-1024-rerank | BM25 | ✓ | 1024 | 0.664 | 0.979 | 0.481 |
+
+### 人工 30 题子集（可信口径）
+
+| 方案 | HR@5 | MRR | KPC | Faith | Citation |
+|---|---|---|---|---|---|
+| baseline（dense-512, top5） | 0.467 | 0.286 | 0.436 | 见补测 | 0.60 |
+| baseline + BM25-1024 | 0.633 | 0.452 | - | - | - |
+| **BM25-1024 + rerank** | **0.900** | **0.698** | - | - | - |
+| + top-k=3 | 0.900 | 0.698 | 0.854 | 0.722 | 0.967 |
+| + top-k=5 | 0.900 | 0.698 | **0.891** | 0.707 | 0.700 |
+| + top-k=10 | 0.900 | 0.698 | 0.844 | 0.791 | 0.133 |
+
+**核心结论**：
+1. 检索方案排序：BM25 > Hybrid(RRF) > Dense（词法型语料 + 词法偏置评测集双因素）；
+2. rerank 在人工题上收益最大（+0.267 HR@5），在自动题上被评测偏差掩盖（-0.113）——**必须双口径报告**；
+3. KPC 倒 U 型峰值在 top_k=5；CitationRate 随 top_k 单调坍塌；
+4. 检索提升真实传导到生成质量（同 30 题 KPC 0.436→0.891）。
 
 **失败类型分布**（n=238，判定顺序：无 gold 命中→`retrieval_miss`；命中但不在 top-5→`rank_miss`；答案覆盖不足→`generation_miss`）：
 
