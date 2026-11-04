@@ -1,0 +1,176 @@
+{
+  "n_questions": 238,
+  "HitRate@1": NaN,
+  "Recall@1": NaN,
+  "HitRate@3": NaN,
+  "Recall@3": NaN,
+  "HitRate@5": NaN,
+  "Recall@5": NaN,
+  "HitRate@10": NaN,
+  "Recall@10": NaN,
+  "HitRate@20": NaN,
+  "Recall@20": NaN,
+  "HitRate@50": NaN,
+  "Recall@50": NaN,
+  "MRR": NaN,
+  "KeyPointCoverage": 0.9263,
+  "CitationRate": 0.0,
+  "AnswerCorrectness": 0.9013,
+  "failure_distribution": {
+    "generation_miss": 0.0672,
+    "ok": 0.9328
+  },
+  "failure_counts": {
+    "ok": 222,
+    "generation_miss": 16
+  },
+  "by_type": {
+    "事实型": {
+      "n_questions": 147,
+      "HitRate@1": NaN,
+      "Recall@1": NaN,
+      "HitRate@3": NaN,
+      "Recall@3": NaN,
+      "HitRate@5": NaN,
+      "Recall@5": NaN,
+      "HitRate@10": NaN,
+      "Recall@10": NaN,
+      "HitRate@20": NaN,
+      "Recall@20": NaN,
+      "HitRate@50": NaN,
+      "Recall@50": NaN,
+      "MRR": NaN,
+      "KeyPointCoverage": 0.9541,
+      "CitationRate": 0.0,
+      "AnswerCorrectness": 0.8944,
+      "failure_distribution": {
+        "generation_miss": 0.0476,
+        "ok": 0.9524
+      },
+      "failure_counts": {
+        "ok": 140,
+        "generation_miss": 7
+      }
+    },
+    "多跳型": {
+      "n_questions": 9,
+      "HitRate@1": NaN,
+      "Recall@1": NaN,
+      "HitRate@3": NaN,
+      "Recall@3": NaN,
+      "HitRate@5": NaN,
+      "Recall@5": NaN,
+      "HitRate@10": NaN,
+      "Recall@10": NaN,
+      "HitRate@20": NaN,
+      "Recall@20": NaN,
+      "HitRate@50": NaN,
+      "Recall@50": NaN,
+      "MRR": NaN,
+      "KeyPointCoverage": 0.9167,
+      "CitationRate": 0.0,
+      "AnswerCorrectness": 1.0,
+      "failure_distribution": {
+        "ok": 1.0
+      },
+      "failure_counts": {
+        "ok": 9
+      }
+    },
+    "对比型": {
+      "n_questions": 17,
+      "HitRate@1": NaN,
+      "Recall@1": NaN,
+      "HitRate@3": NaN,
+      "Recall@3": NaN,
+      "HitRate@5": NaN,
+      "Recall@5": NaN,
+      "HitRate@10": NaN,
+      "Recall@10": NaN,
+      "HitRate@20": NaN,
+      "Recall@20": NaN,
+      "HitRate@50": NaN,
+      "Recall@50": NaN,
+      "MRR": NaN,
+      "KeyPointCoverage": 0.852,
+      "CitationRate": 0.0,
+      "AnswerCorrectness": 1.0,
+      "failure_distribution": {
+        "generation_miss": 0.0588,
+        "ok": 0.9412
+      },
+      "failure_counts": {
+        "ok": 16,
+        "generation_miss": 1
+      }
+    },
+    "计算型": {
+      "n_questions": 45,
+      "HitRate@1": NaN,
+      "Recall@1": NaN,
+      "HitRate@3": NaN,
+      "Recall@3": NaN,
+      "HitRate@5": NaN,
+      "Recall@5": NaN,
+      "HitRate@10": NaN,
+      "Recall@10": NaN,
+      "HitRate@20": NaN,
+      "Recall@20": NaN,
+      "HitRate@50": NaN,
+      "Recall@50": NaN,
+      "MRR": NaN,
+      "KeyPointCoverage": 0.9163,
+      "CitationRate": 0.0,
+      "AnswerCorrectness": 0.8667,
+      "failure_distribution": {
+        "generation_miss": 0.1556,
+        "ok": 0.8444
+      },
+      "failure_counts": {
+        "ok": 38,
+        "generation_miss": 7
+      }
+    },
+    "过程型": {
+      "n_questions": 20,
+      "HitRate@1": NaN,
+      "Recall@1": NaN,
+      "HitRate@3": NaN,
+      "Recall@3": NaN,
+      "HitRate@5": NaN,
+      "Recall@5": NaN,
+      "HitRate@10": NaN,
+      "Recall@10": NaN,
+      "HitRate@20": NaN,
+      "Recall@20": NaN,
+      "HitRate@50": NaN,
+      "Recall@50": NaN,
+      "MRR": NaN,
+      "KeyPointCoverage": 0.8167,
+      "CitationRate": 0.0,
+      "AnswerCorrectness": 0.9118,
+      "failure_distribution": {
+        "generation_miss": 0.05,
+        "ok": 0.95
+      },
+      "failure_counts": {
+        "ok": 19,
+        "generation_miss": 1
+      }
+    }
+  },
+  "experiment": "norag",
+  "config": "F:\\undergraduate\\configs\\norag.yaml",
+  "chunk_size": 512,
+  "chunk_overlap": 50,
+  "retrieve_mode": "none",
+  "no_rag": true,
+  "top_k": 5,
+  "embedding_model": "nomic-embed-text",
+  "llm_model": "qwen3:4b",
+  "with_generation": true,
+  "with_faithfulness": false,
+  "elapsed_sec": 19499.9,
+  "questions_path": "F:\\undergraduate\\data\\eval\\questions_v2.0.jsonl",
+  "questions_sha256": "188d98746d6ab91e"
+}

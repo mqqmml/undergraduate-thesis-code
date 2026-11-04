@@ -90,19 +90,25 @@ def evaluate(cfg: Dict[str, Any], with_gen: bool = True, limit: int | None = Non
     min_len = cfg["eval"].get("min_evidence_len", 8)
     kpc_threshold = cfg["eval"].get("kpc_threshold", 0.5)
     use_faithfulness = cfg["eval"].get("faithfulness", False) and with_gen
+    no_rag = str(cfg["retrieve"].get("mode", "")).lower() in ("none", "no_rag", "norag")
+    use_correctness = cfg["eval"].get("answer_correctness", False) and with_gen
     result_dir = out_dir(cfg)
     retrieval_log_path = result_dir / "retrieval_log.jsonl"
 
     if use_faithfulness:
         print("[evaluate] 启用 Faithfulness（LLM 裁判），每题会额外调一次裁判模型")
+    if use_correctness:
+        print("[evaluate] 启用 AnswerCorrectness（LLM 裁判，对比 gold_answer）")
+    if no_rag:
+        print("[evaluate] 无 RAG 模式：不检索，直接由 LLM 回答（对照组）")
 
     rows: List[Dict[str, Any]] = []
     t0 = time.time()
 
     with open(retrieval_log_path, "w", encoding="utf-8") as log_f:
         for q in tqdm(questions, desc="评测中", ncols=80):
-            # 一次取到 max_k，够算所有 @k 指标
-            hits = retrieve(q["question"], k=max_k, cfg=cfg)
+            # 一次取到 max_k，够算所有 @k 指标；无 RAG 对照组不检索
+            hits = [] if no_rag else retrieve(q["question"], k=max_k, cfg=cfg)
             gold = _build_gold(q)
             log_f.write(
                 json.dumps(
@@ -131,14 +137,18 @@ def evaluate(cfg: Dict[str, Any], with_gen: bool = True, limit: int | None = Non
                 "top1_score": round(hits[0]["score"], 4) if hits else "",
             }
             for k in k_values:
-                row[f"hit@{k}"] = hit_rate_at_k(hits, gold, k, min_len)
-                row[f"recall@{k}"] = recall_at_k(hits, gold, k, min_len)
-            row["mrr"] = mrr(hits, gold, min_len)
+                row[f"hit@{k}"] = (
+                    float("nan") if no_rag else hit_rate_at_k(hits, gold, k, min_len)
+                )
+                row[f"recall@{k}"] = (
+                    float("nan") if no_rag else recall_at_k(hits, gold, k, min_len)
+                )
+            row["mrr"] = float("nan") if no_rag else mrr(hits, gold, min_len)
 
             if with_gen:
                 # 延迟导入：--no-gen 模式不需要 langchain_ollama
                 from src.generate import answer as gen_answer
-                from src.judge import faithfulness
+                from src.judge import answer_correctness, faithfulness
 
                 out = gen_answer(q["question"], cfg)
                 row["answer"] = out["answer"]
@@ -146,13 +156,29 @@ def evaluate(cfg: Dict[str, Any], with_gen: bool = True, limit: int | None = Non
                     keypoint_coverage(out["answer"], q["key_points"], kpc_threshold), 4
                 )
                 row["citation_rate"] = citation_rate(out["answer"])
-                row["failure_type"] = classify_failure(
-                    hits, gold, out["answer"], q["key_points"],
-                    cfg["retrieve"]["top_k"], min_len, kpc_threshold,
-                )
-                if use_faithfulness:
+                if no_rag:
+                    row["failure_type"] = (
+                        "ok"
+                        if row["keypoint_coverage"] >= kpc_threshold
+                        else "generation_miss"
+                    )
+                else:
+                    row["failure_type"] = classify_failure(
+                        hits, gold, out["answer"], q["key_points"],
+                        cfg["retrieve"]["top_k"], min_len, kpc_threshold,
+                    )
+                if use_correctness:
+                    row["answer_correctness"] = round(
+                        answer_correctness(
+                            q["question"], q.get("gold_answer", ""), out["answer"], cfg
+                        ),
+                        4,
+                    )
+                if use_faithfulness and not no_rag:
                     contexts = [h["text"] for h in out["hits"][: cfg["retrieve"]["top_k"]]]
                     row["faithfulness"] = round(faithfulness(out["answer"], contexts, cfg), 4)
+                elif use_faithfulness:
+                    row["faithfulness"] = float("nan")
             else:
                 hr = hit_rate_at_k(hits, gold, cfg["retrieve"]["top_k"], min_len)
                 row["answer"] = ""
@@ -181,7 +207,8 @@ def evaluate(cfg: Dict[str, Any], with_gen: bool = True, limit: int | None = Non
             "config": cfg.get("_config_path"),
             "chunk_size": cfg["chunk"]["size"],
             "chunk_overlap": cfg["chunk"]["overlap"],
-            "retrieve_mode": cfg["retrieve"]["mode"],
+            "retrieve_mode": "none" if no_rag else cfg["retrieve"]["mode"],
+            "no_rag": no_rag,
             "top_k": cfg["retrieve"]["top_k"],
             "embedding_model": cfg["embedding"]["model"],
             "llm_model": cfg["generate"]["model"] if with_gen else None,
@@ -201,7 +228,7 @@ def evaluate(cfg: Dict[str, Any], with_gen: bool = True, limit: int | None = Non
 
     print("\n================ Baseline 评测结果 ================")
     for k, v in summary.items():
-        if k.startswith(("HitRate", "Recall")) or k in ("MRR", "KeyPointCoverage", "Faithfulness", "CitationRate", "n_questions"):
+        if k.startswith(("HitRate", "Recall")) or k in ("MRR", "KeyPointCoverage", "Faithfulness", "CitationRate", "AnswerCorrectness", "n_questions"):
             print(f"  {k:<20} {v}")
     print(f"  失败类型分布          {summary.get('failure_distribution')}")
     print(f"  耗时                  {summary['elapsed_sec']}s")
@@ -220,6 +247,8 @@ def main() -> None:
                         help="临时覆盖检索方式（用于矩阵实验，结果目录名自动加后缀）")
     parser.add_argument("--top-k", dest="top_k", type=int, default=None,
                         help="临时覆盖 top_k / max_context_chunks")
+    parser.add_argument("--no-rag", dest="no_rag", action="store_true",
+                        help="无 RAG 对照组：不检索，LLM 直接作答（结果目录名加后缀 -norag）")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -227,6 +256,11 @@ def main() -> None:
     if args.mode:
         cfg["retrieve"]["mode"] = args.mode
         suffix += f"-{args.mode}"
+    if args.no_rag:
+        cfg["retrieve"]["mode"] = "none"
+        suffix += "-norag"
+        # 无 RAG 无上下文，Faithfulness 无意义，自动关闭
+        cfg["eval"]["faithfulness"] = False
     if args.top_k:
         cfg["retrieve"]["top_k"] = args.top_k
         cfg["generate"]["max_context_chunks"] = args.top_k

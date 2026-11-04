@@ -93,3 +93,43 @@ def reset_llm() -> None:
     """切换模型时重置单例。"""
     global _LLM
     _LLM = None
+
+
+_CORRECTNESS_PROMPT = """你是严格的阅卷老师。请对比"参考答案"与"考生回答"，判断考生回答的正确程度。
+
+问题：{question}
+
+参考答案：{gold}
+
+考生回答：{answer}
+
+评分标准：
+- 1.0：结论正确，覆盖参考答案的核心要点（措辞不同但语义一致也算正确）；
+- 0.5：部分正确，命中部分要点但存在遗漏或表述不准确；
+- 0.0：结论错误、答非所问，或明确表示"资料中没有相关信息"。
+
+只输出 JSON，不要解释、不要 Markdown：{{"score": 0.0, "reason": "一句话理由"}}
+"""
+
+
+def answer_correctness(question: str, gold: str, ans: str, cfg: Dict[str, Any]) -> float:
+    """回答正确性（0 / 0.5 / 1），由 LLM 裁判对 gold_answer 判分。"""
+    if not gold or not ans:
+        return float("nan")
+    prompt = _CORRECTNESS_PROMPT.format(question=question, gold=gold, answer=ans)
+    llm = _get_llm(cfg)
+    resp = llm.invoke(prompt)
+    text = resp.content if isinstance(resp.content, str) else str(resp.content)
+    m = re.search(r'"score"\s*:\s*([0-9.]+)', text)
+    if not m:
+        print(f"[judge] AnswerCorrectness 解析失败: {text[:80]}")
+        return float("nan")
+    try:
+        score = float(m.group(1))
+    except ValueError:
+        return float("nan")
+    if score >= 0.75:
+        return 1.0
+    if score >= 0.25:
+        return 0.5
+    return 0.0

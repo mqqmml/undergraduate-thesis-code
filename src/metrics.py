@@ -223,6 +223,8 @@ def _block(rows: List[Dict[str, Any]], k_values: Sequence[int]) -> Dict[str, Any
     out["CitationRate"] = _mean(rows, "citation_rate")
     if "faithfulness" in rows[0]:
         out["Faithfulness"] = _mean(rows, "faithfulness")
+    if "answer_correctness" in rows[0]:
+        out["AnswerCorrectness"] = _mean(rows, "answer_correctness")
 
     fails: Dict[str, int] = {}
     for r in rows:

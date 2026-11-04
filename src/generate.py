@@ -34,9 +34,15 @@ def build_prompt(question: str, hits: list[dict], cfg: Dict[str, Any]) -> str:
 
 
 def answer(question: str, cfg: Dict[str, Any] | None = None) -> dict:
-    """朴素 RAG 完整链路：检索 -> 拼 prompt -> 生成。返回答案与检索结果。"""
+    """朴素 RAG 完整链路：检索 -> 拼 prompt -> 生成。返回答案与检索结果。
+
+    retrieve.mode = none 时为无 RAG 对照组：不检索，直接作答。
+    """
     cfg = cfg or load_config()
-    hits = retrieve(question, k=cfg["retrieve"]["top_k"], cfg=cfg)
+    mode = str(cfg["retrieve"].get("mode", "dense")).lower()
+    hits = [] if mode in ("none", "no_rag", "norag") else retrieve(
+        question, k=cfg["retrieve"]["top_k"], cfg=cfg
+    )
     prompt = build_prompt(question, hits, cfg)
     resp = _get_llm(cfg).invoke(prompt)
     text = resp.content if isinstance(resp.content, str) else str(resp.content)

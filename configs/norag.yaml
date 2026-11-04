@@ -1,0 +1,62 @@
+# ============================================================
+# 无 RAG 对照组配置（任务书第 3 条：LLM 直接作答，不检索）
+# 与 baseline_v2 的唯一区别：mode=none，prompt 不含资料，关闭 Faithfulness
+# ============================================================
+
+name: norag
+description: 无 RAG 对照组（qwen3:4b 直接作答，无检索无上下文）
+
+# ---------- 语料（不参与检索，仅保持配置结构一致）----------
+corpus:
+  raw_dir: data/raw
+  patterns: ["*.md", "*.txt", "*.pdf"]
+
+chunk:
+  size: 512
+  overlap: 50
+  splitter: recursive
+
+embedding:
+  provider: ollama
+  model: nomic-embed-text
+
+index:
+  type: faiss
+  persist_dir: index/baseline
+  embed_batch: 32
+
+# ---------- 检索：关闭 ----------
+retrieve:
+  mode: none
+  top_k: 5
+
+# ---------- 生成：不带任何资料 ----------
+generate:
+  provider: ollama
+  model: qwen3:4b
+  temperature: 0
+  max_context_chunks: 5
+  prompt: |
+    你是计算机网络课程助教。请直接回答下面的问题。
+
+    要求：
+    1. 回答尽量完整、条理清晰，涉及协议流程时按步骤说明；
+    2. 不确定的内容不要编造，可以说明不确定。
+
+    【问题】
+    {question}
+
+    【回答】
+
+# ---------- 评测 ----------
+eval:
+  questions: data/eval/questions_v2.0.jsonl
+  k_values: [1, 3, 5, 10, 20, 50]
+  match: chunk
+  min_evidence_len: 8
+  kpc_threshold: 0.5
+  faithfulness: false              # 无上下文，Faithfulness 无意义
+  answer_correctness: true         # 无 RAG 的核心指标：对 gold_answer 判分
+
+output:
+  dir: results
