@@ -29,6 +29,41 @@
 
 按 Baseline 切分参数（chunk_size=512, overlap=50）估算约生成 800–1000 个文本块（实际以建索引时 `chunks.jsonl` 为准）。
 
+## 版本信息（KB v1.0，2026-10-03 冻结）
+
+指纹由 `scripts/corpus_version.py` 复算，结果同时落盘 `data/metadata/corpus_version.json`。
+
+| 项 | 值 |
+|---|---|
+| 知识库版本 | **KB v1.0** |
+| 语料集合 SHA-256 | `0fe0e5c844219aaa69ec4bd7b752e5dc30ab8b7be6b1c097ba645a9ef1ebfd1d` |
+| 文件数 / 总字符 | 6 / 373,650 |
+| 切分器 | RecursiveCharacterTextSplitter，overlap=50，分隔符 `\n\n → \n → 。 → ； → 空格` |
+| 嵌入模型（基线） | nomic-embed-text，768 维 |
+| 嵌入模型（对照） | bge-m3，1024 维 |
+| 索引类型 | FAISS IndexFlatIP，按配置名分目录持久化 |
+
+各切分配置的实际块数（实测，非估算）：
+
+| chunk_size | 块数 | 平均长度（字符） | 最短 / 最长 |
+|---|---|---|---|
+| 256 | 2,088 | 187.1 | 见 JSON |
+| 512（基线） | 1,078 | 349.0 | 见 JSON |
+| 1024 | 638 | 580.0 | 见 JSON |
+
+单文件校验和：
+
+| 文件 | 字符数 | SHA-256（前 16 位） |
+|---|---|---|
+| 01-计算机网络体系结构.md | 33,295 | 见 `corpus_version.json` |
+| 02-物理层.md | 22,364 | 见 `corpus_version.json` |
+| 03-数据链路层.md | 92,949 | 见 `corpus_version.json` |
+| 04-网络层.md | 123,480 | 见 `corpus_version.json` |
+| 05-传输层.md | 54,670 | 见 `corpus_version.json` |
+| 06-应用层.md | 46,892 | 见 `corpus_version.json` |
+
+> 复现方式：`PYTHONPATH=. python scripts/corpus_version.py`，输出与上表逐项比对即可确认语料未被改动。
+
 ## 已知质量问题（论文 limitation 素材）
 
 1. OCR 偶发错字（如"接口"→"接和"、"某个"→"尤个"），正文整体识别率约 98%+

@@ -1,0 +1,8 @@
+[evaluate] 载入评测题 238 道：F:\undergraduate\data\eval\questions_v2.0.jsonl
+[evaluate] 启用 AnswerCorrectness（LLM 裁判，对比 gold_answer）
+[evaluate] 无 RAG 模式：不检索，直接由 LLM 回答（对照组）
+评测中:   0%|                                             | 0/2 [00:00<?, ?it/s]Building prefix dict from the default dictionary ...
+Dumping model to file cache C:\Users\mawulifu\AppData\Local\Temp\jieba.cache
+Loading model cost 0.416 seconds.
+Prefix dict has been built successfully.
+评测中:  50%|██████████████████▌                  | 1/2 [00:58<00:58, 58.39s/it]

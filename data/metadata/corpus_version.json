@@ -1,0 +1,74 @@
+{
+  "kb_version": "v1.0",
+  "frozen_date": "2026-10-03",
+  "generated_at": "2026-11-04",
+  "corpus_sha256": "0fe0e5c844219aaa69ec4bd7b752e5dc30ab8b7be6b1c097ba645a9ef1ebfd1d",
+  "n_files": 6,
+  "total_chars": 373650,
+  "files": [
+    {
+      "file": "01-计算机网络体系结构.md",
+      "chars": 33295,
+      "sha256": "5e8dc52fade49d63e5652a0af25af9a4e0c95d599511b94aed4e3a1b3a65e4a8"
+    },
+    {
+      "file": "02-物理层.md",
+      "chars": 22364,
+      "sha256": "d663c7e6fc6655225ed274609c5456bce5adaccad921b9cad82cbe77a6a1ea35"
+    },
+    {
+      "file": "03-数据链路层.md",
+      "chars": 92949,
+      "sha256": "ebbeb15a62c456c458d5a7bc7543bd024a62178593066c7388f2a6de156278f6"
+    },
+    {
+      "file": "04-网络层.md",
+      "chars": 123480,
+      "sha256": "28f79a303ae282b21ede045488827461fd5a73fb15a2749db7834e665bff8640"
+    },
+    {
+      "file": "05-传输层.md",
+      "chars": 54670,
+      "sha256": "ddfa41450ef16622166098640fceb9efd9d8741f74116af64251b028d86fc251"
+    },
+    {
+      "file": "06-应用层.md",
+      "chars": 46892,
+      "sha256": "2c41586cd50090e192bc222e263d4b3af6c571cc6f7149e4ecb9d7eca8317831"
+    }
+  ],
+  "chunk_stats": {
+    "256": {
+      "n_chunks": 2088,
+      "avg_len": 187.1,
+      "min_len": 5,
+      "max_len": 256
+    },
+    "512": {
+      "n_chunks": 1078,
+      "avg_len": 349.0,
+      "min_len": 8,
+      "max_len": 512
+    },
+    "1024": {
+      "n_chunks": 638,
+      "avg_len": 580.0,
+      "min_len": 8,
+      "max_len": 1023
+    }
+  },
+  "embedding": {
+    "baseline": "nomic-embed-text (768d)",
+    "alternative": "bge-m3 (1024d)"
+  },
+  "index": {
+    "type": "faiss IndexFlatIP",
+    "persist_dir": "index/<config-name>"
+  },
+  "env": {
+    "python": "3.13.14",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu_only": true
+  },
+  "notes": "语料不入库；指纹入库，可用 scripts/corpus_version.py 复算校验。"
+}

@@ -37925,3 +37925,4 @@ slot print_timing: id  0 | task 1254307 |    graphs reused =    1252410
 slot      release: id  0 | task 1254307 | stop processing: n_tokens = 2413, truncated = 1
 srv  update_slots: all slots are idle
 [GIN] 2026/11/04 - 17:55:43 | 200 |         1m28s |       127.0.0.1 | POST     "/api/chat"
+time=2026-11-04T21:05:38.461+08:00 level=INFO source=model_recommendations.go:177 msg="model recommendations cache sleep scheduled" wait=3h51m10.970660026s consecutive_failures=0

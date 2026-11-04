@@ -107,6 +107,26 @@
 
 > v1.0 详细结果见 `results/baseline/summary.json`；v2.0 见 `results/baseline_v2/summary.json`、`results/baseline_v2/per_question.csv`（逐题明细）与 `data/eval/audit_report_v2.0.md`。
 
+### 知识库版本（可复现性凭证）
+
+语料不入库，入库的是指纹：
+
+| 项 | 值 |
+|---|---|
+| 版本 | `v1.0`（冻结于 2026-10-03） |
+| 文件数 / 总字数 | 6 / 373,650 |
+| 语料 SHA256 | `0fe0e5c844219aaa69ec4bd7b752e5dc30ab8b7be6b1c097ba645a9ef1ebfd1d` |
+| 切分块数（256/512/1024） | 2,088 / 1,078 / 638 |
+| 嵌入 | `nomic-embed-text`(768d)，替代 `bge-m3`(1024d) |
+
+复算校验：`python scripts/corpus_version.py`（逐文件 sha256 + 块统计，写入 `data/metadata/corpus_version.json`）。
+
+### 人工复核（待填写）
+
+`data/eval/human_audit_sheet.xlsx` 为 20 题分层抽样复核表（事实 7 / 对比 5 / 过程 5 / 多跳 2 / 计算 1，取自最终管线 `BM25-1024 + rerank, top_k=5`）。三个判定列**留空**，需人工逐题判读后填「是/否」，再运行 `python scripts/kappa_audit.py` 生成 `results/audit_kappa.md`（Cohen's kappa）。
+
+当前状态：未填写，报告仅给出自动判定侧的参考分布——KPC≥0.5 命中 20/20，而 Faithfulness≥0.8 仅 9/20，提示 0.8 阈值对 4B 裁判模型偏严，需用人工结果校准。
+
 ## 七、仓库目录说明
 
 | 目录 | 用途 |
